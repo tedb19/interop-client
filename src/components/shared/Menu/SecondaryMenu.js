@@ -6,11 +6,14 @@ import { MenuItem } from './MenuItem'
 
 export const SecondaryMenu = (props) => {
 
-    const MenuItems = props.messageTypes.map(messageType => {
+    const MenuItems = props.data.map(dataItem => {
+        const slash = '/'
+        const path = slash + props.mainMenu + slash + dataItem.name.replace(/ /g, '-')
         return (
             <MenuItem
-                key={messageType.name}
-                name={messageType.name}
+                key={dataItem.name}
+                name={dataItem.name}
+                to={path}
                 handleItemClick={props.handleItemClick}
                 activeItem={props.activeItem}/>
         )
@@ -24,7 +27,8 @@ export const SecondaryMenu = (props) => {
 }
 
 SecondaryMenu.propTypes = {
-  messageTypes: PropTypes.array.isRequired,
+  data: PropTypes.array.isRequired,
   handleItemClick: PropTypes.func.isRequired,
-  activeItem: PropTypes.string.isRequired
+  activeItem: PropTypes.string.isRequired,
+  mainMenu: PropTypes.string.isRequired
 }

@@ -2,8 +2,9 @@ import React, { Component } from 'react'
 import './App.css'
 import { Grid, Divider } from 'semantic-ui-react'
 import { HeaderGrid } from './components/shared/Grid/HeaderGrid'
-import { MainContentGrid } from './components/shared/Grid/MainContentGrid'
 import { messageTypesSecondaryMenuData, DefaultMessageTypeForMenu } from './utils/data.utils'
+import { Main } from './components/Routes/Main'
+import {SideMenu} from './components/shared/Menu/SideMenu'
 
 class App extends Component {
   state = { 
@@ -18,17 +19,22 @@ class App extends Component {
 
   render() {
     return (
-      <Grid columns={2}>
-        <HeaderGrid/>
-        <Divider/>
-        <MainContentGrid
-          handleMainMenuItemClick={this.handleMainMenuItemClick}
-          handleSecondaryMenuItemClick={this.handleSecondaryMenuItemClick}
-          ActiveMenuItem={this.state.ActiveMenuItem}
-          ActiveSecondaryMenuItem={this.state.ActiveSecondaryMenuItem}
-          SecondaryMenuData={this.state.SecondaryMenuData}
-          />
-      </Grid>
+        <Grid columns={5}>
+          <HeaderGrid/>
+          <Divider/>
+          <Grid.Row>
+              <Grid.Column width={1}></Grid.Column>
+              <Grid.Column width={2} className="main-menu">
+                  <SideMenu
+                      handleItemClick={this.handleMainMenuItemClick}
+                      activeItem={this.state.ActiveMenuItem}/>
+              </Grid.Column>
+              <Grid.Column width={13}>
+                <Main/>
+              </Grid.Column>
+          </Grid.Row>
+          
+        </Grid>      
     );
   }
 }

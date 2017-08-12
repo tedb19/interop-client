@@ -2,8 +2,9 @@ import React from 'react'
 import { Grid, Header } from 'semantic-ui-react'
 import { SideMenu } from '../Menu/SideMenu'
 import { MessaegTypesMenu } from '../../MessageTypes/MessageTypesMenu'
-import { InfoSection } from '../Content/InfoSection'
-
+import { MessageTypeDetail } from '../../MessageTypes/MessageTypeDetail'
+import { Link } from 'react-router-dom'
+const messageType = { id: 1, name: 'ADT^A04', verboseName: 'PADIENT_REGISTRATION',  description: 'The patient registration message. The patient registration message. The patient registration message. The patient registration message. The patient registration message. The patient registration message. The patient registration message.'}
 export const MainContentGrid = (props) => (
     <Grid.Row>
         <Grid.Column width={2}></Grid.Column>
@@ -19,12 +20,11 @@ export const MainContentGrid = (props) => (
                 activeItem={props.ActiveSecondaryMenuItem}
                 messageTypes={props.SecondaryMenuData}/>
             <br/>
-            <span><a href="">Add new message type</a></span>
+            <span><Link to="/new-message-type">Add new message type</Link></span>
         </Grid.Column>
         <Grid.Column width={8} className="content-area">
-            <InfoSection>
-                Coming soon!!
-            </InfoSection>
+            <MessageTypeDetail
+                messageType={messageType}/>
         </Grid.Column>
         <Grid.Column width={2}></Grid.Column>
     </Grid.Row>

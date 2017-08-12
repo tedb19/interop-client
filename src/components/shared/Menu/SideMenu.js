@@ -13,11 +13,13 @@ export const SideMenu = (props) => {
     ]
 
     const MenuItems = menuItemsSettings.map(menuItemsSetting => {
+        const path = '/' + menuItemsSetting.name.replace(/ /g, '-')
         return (
             <MenuItem
                 key={menuItemsSetting.icon}
                 name={menuItemsSetting.name}
                 icon={menuItemsSetting.icon}
+                to={path}
                 handleItemClick={props.handleItemClick}
                 activeItem={props.activeItem}/>
         )
