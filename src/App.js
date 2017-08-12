@@ -1,15 +1,15 @@
 import React, { Component } from 'react'
 import './App.css'
 import { Grid, Divider } from 'semantic-ui-react'
-import { HeaderGrid} from './components/shared/Header/HeaderGrid'
-import { MainContentGrid } from './components/shared/main-area/MainContentGrid'
-import {tempData } from './TempData'
+import { HeaderGrid } from './components/shared/Grid/HeaderGrid'
+import { MainContentGrid } from './components/shared/Grid/MainContentGrid'
+import { messageTypesSecondaryMenuData, DefaultMessageTypeForMenu } from './utils/data.utils'
 
 class App extends Component {
   state = { 
     ActiveMenuItem: 'Home', 
-    ActiveSecondaryMenuItem: 'Patient Registration (ADT^A04)',
-    SecondaryMenuData: tempData().messageTypes
+    ActiveSecondaryMenuItem: DefaultMessageTypeForMenu().name,
+    SecondaryMenuData: messageTypesSecondaryMenuData()
   }
 
   handleMainMenuItemClick = (e, { name }) => this.setState({ ActiveMenuItem: name} )

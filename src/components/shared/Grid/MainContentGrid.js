@@ -1,7 +1,8 @@
 import React from 'react'
 import { Grid, Header } from 'semantic-ui-react'
 import { SideMenu } from '../Menu/SideMenu'
-import { MessaegTypesMenu } from '../../message-types/MessageTypesMenu'
+import { MessaegTypesMenu } from '../../MessageTypes/MessageTypesMenu'
+import { InfoSection } from '../Content/InfoSection'
 
 export const MainContentGrid = (props) => (
     <Grid.Row>
@@ -21,8 +22,9 @@ export const MainContentGrid = (props) => (
             <span><a href="">Add new message type</a></span>
         </Grid.Column>
         <Grid.Column width={8} className="content-area">
-            <strong>Name: </strong>Patient Registration<br/>
-            <strong>Name: </strong>Patient Registration<br/>
+            <InfoSection>
+                Coming soon!!
+            </InfoSection>
         </Grid.Column>
         <Grid.Column width={2}></Grid.Column>
     </Grid.Row>
