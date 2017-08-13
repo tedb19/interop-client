@@ -44,7 +44,21 @@
 }
 .content-segment {
   background-color: aliceblue !important;
+  min-height: 80vh;
 }
 .ribbon-container {
   padding: 20px;
+}
+.list-item-label {
+  padding-top: 0.5em !important;
+  padding-bottom: 0.5em !important;
+}
+.list-item-span {
+  text-align: center
+}
+.list-item-link {
+  float: right
+}
+.list-item {
+  cursor: auto !important;
 }

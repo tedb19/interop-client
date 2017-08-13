@@ -9,6 +9,7 @@ import { Settings } from '../Pages/Settings'
 export const Main = () => (
     <Switch>
       <Route exact path='/Home' component={Home}/>
+      <Route exact path='/' component={Home}/>
       <Route path='/Message-Subscription' component={MessageSubscription}/>
       <Route path='/Message-Type' component={MessageTypes}/>
       <Route path='/Entities' component={Entities}/>

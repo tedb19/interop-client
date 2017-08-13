@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { Grid } from 'semantic-ui-react'
-import {HeaderSection } from '../Header/HeaderSection'
+import { HeaderSection } from './HeaderSection'
 
 export const HeaderGrid = () => (
     <Grid.Row>

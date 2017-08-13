@@ -1,16 +1,13 @@
 import React, { Component } from 'react'
 import './App.css'
 import { Grid, Divider } from 'semantic-ui-react'
-import { HeaderGrid } from './components/shared/Grid/HeaderGrid'
-import { messageTypesSecondaryMenuData, DefaultMessageTypeForMenu } from './utils/data.utils'
+import { HeaderGrid } from './components/shared/Header/HeaderGrid'
 import { Main } from './components/Routes/Main'
-import {SideMenu} from './components/shared/Menu/SideMenu'
+import { SideMenu} from './components/shared/Menu/SideMenu'
 
 class App extends Component {
   state = { 
-    ActiveMenuItem: 'Home', 
-    ActiveSecondaryMenuItem: DefaultMessageTypeForMenu().name,
-    SecondaryMenuData: messageTypesSecondaryMenuData()
+    ActiveMenuItem: 'Home'
   }
 
   handleMainMenuItemClick = (e, { name }) => this.setState({ ActiveMenuItem: name} )
@@ -33,8 +30,7 @@ class App extends Component {
                 <Main/>
               </Grid.Column>
           </Grid.Row>
-          
-        </Grid>      
+        </Grid>
     );
   }
 }

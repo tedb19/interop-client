@@ -23,7 +23,7 @@ export const Detail  = (props) => {
                     </RibbonSection>
 
                     <RibbonSection heading="More Info" color="orange">
-                        {props.moreInfo}
+                        {props.children}
                     </RibbonSection>
                 </Segment>
                 </Grid.Column>
