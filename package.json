@@ -10,7 +10,8 @@
     "react-scripts": "1.0.11",
     "semantic-ui-css": "^2.2.12",
     "semantic-ui-react": "^0.71.4",
-    "title-case": "^2.1.1"
+    "title-case": "^2.1.1",
+    "victory": "^0.21.4"
   },
   "scripts": {
     "start": "react-scripts start",

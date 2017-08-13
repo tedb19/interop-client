@@ -11,7 +11,7 @@ import { StatusLabel } from '../../shared/Misc/StatusLabel'
 
 import { DefaultEntityForMenu, entitiesSecondaryMenuData, getEntityObj } from '../../../utils/data.utils'
 
-class Entities extends Component {
+export class Entities extends Component {
 
     state = {
         ActiveEntityMenuItem: DefaultEntityForMenu().name,
@@ -70,5 +70,3 @@ class Entities extends Component {
         )
     }
 }
-
-export default Entities

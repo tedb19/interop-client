@@ -11,7 +11,7 @@ import { StatusLabel } from '../../shared/Misc/StatusLabel'
 
 import { DefaultMessageTypeForMenu, messageTypesSecondaryMenuData, getMessageTypeObj } from '../../../utils/data.utils'
 
-class MessageTypes extends Component {
+export class MessageTypes extends Component {
 
     state = {
         ActiveMessageTypeMenuItem: DefaultMessageTypeForMenu().name,
@@ -71,5 +71,3 @@ class MessageTypes extends Component {
         )
     }
 }
-
-export default MessageTypes

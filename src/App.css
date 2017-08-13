@@ -62,3 +62,6 @@
 .list-item {
   cursor: auto !important;
 }
+.main-content {
+  margin-top: 6px !important;
+}

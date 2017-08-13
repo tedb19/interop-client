@@ -1,19 +1,14 @@
 import React from 'react'
-import { Grid, Header } from 'semantic-ui-react'
+import { Segment, Grid } from 'semantic-ui-react'
 
 export const MainContent = (props) => {
     return (
-        <div>
-            <Grid.Column width={2}>
-                <Header as='h2' className="sub-header-text">{props.sectionHeader}</Header>
-                {props.children}
-                <br/>
-                <span>{props.newItemLink}</span>
+        <Grid columns={1} className="main-content">
+            <Grid.Column width={12}>
+                <Segment raised className="content-segment">
+                    {props.children}
+                </Segment>
             </Grid.Column>
-            <Grid.Column width={8} className="content-area">
-                {props.children}
-            </Grid.Column>
-            <Grid.Column width={2}></Grid.Column>
-        </div>
+        </Grid>
     )
 }

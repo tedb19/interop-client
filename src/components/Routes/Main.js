@@ -1,10 +1,6 @@
 import React from 'react'
 import { Switch, Route } from 'react-router-dom'
-import Entities  from '../Pages/Entities/Entities'
-import { Home } from '../Pages/Home'
-import { MessageSubscription } from '../Pages/MessageSubscription'
-import MessageTypes from '../Pages/MessageTypes/MessageTypes'
-import { Settings } from '../Pages/Settings'
+import { Settings, Home, Entities, MessageSubscription, MessageTypes } from '../Pages'
 
 export const Main = () => (
     <Switch>
