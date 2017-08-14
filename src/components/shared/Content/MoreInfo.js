@@ -1,27 +1,35 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { Container, Divider, Header, List } from 'semantic-ui-react'
+import { Container, Divider, Header, List, Segment, Label } from 'semantic-ui-react'
 import { ListItem } from '../../shared/LabelList/ListItem'
+import { SingleItem } from './SingleItem'
 
 export const MoreInfo = (props) => {
+     const colors = ["green", "yellow", "teal"]
+
     const ListItems = (data) => {
-        return data.map(dataItem => {
-            const link = <Link to={dataItem.editLink}>{dataItem.editText}</Link>
-            return <ListItem
-                        key={dataItem.name}
-                        color={dataItem.color}
+        return data.map((dataItem, idx) => {
+            return <SingleItem
+                        key={Math.random()}
+                        color={colors[idx]}
                         name={dataItem.name}
                         description={dataItem.description}
-                        editLink={link}/>})
+                        toLink={dataItem.editLink}/>
+        })
     }
+
     return (
         <Container>
-            <Header as='h3'>{props.heading}</Header>
+            <Header as='h3' className="stats-header">{props.heading}</Header>
             <Divider/>
-            <List divided selection>
-                {ListItems(props.data)}
-            </List>
-            <Link to={props.addLinkUrl}>{props.addLinkText}</Link>
+            <Segment inverted className="segment-subscriptions">
+                <Label className="stats-sub-header-left">Entities</Label>
+                <Label className="stats-sub-header-right">possible actions</Label>
+                <Divider className="stats-divider"/>
+                 {ListItems(props.data)}
+            </Segment>
+
+            
         </Container>
     )
 }

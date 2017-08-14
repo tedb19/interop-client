@@ -16,6 +16,13 @@ export const tempData = () => {
             {id: 4, name: 'T4A', address: null, description: 'The system used to send out appointment reminders to patients', status: 'ACTIVE'},
             {id: 5, name: 'CACHED_EID', address: null, description: 'A locally cached instanse of the EID data, for this facility.', status: 'ACTIVE'},
             {id: 6, name: 'REMOTE_EID', address: null, description: 'The central EID server hosted @ NASCOP', status: 'ACTIVE'}
+        ],
+        subscriptions: [
+            {messageType: 'PATIENT_REGISTRATION', subscribers: ['IQCARE', 'ADT', 'KENYAEMR', 'T4A', 'MPI']},
+            {messageType: 'PATIENT_UPDATE', subscribers: ['IQCARE', 'ADT', 'KENYAEMR', 'T4A', 'MPI']},
+            {messageType: 'VIRAL_LOAD_RESULTS', subscribers: ['IQCARE', 'ADT', 'KENYAEMR']},
+            {messageType: 'PHARMACY_ORDER', subscribers: ['IQCARE', 'KENYAEMR']},
+            {messageType: 'APPOINTMENT_SCHEDULE', subscribers: ['IQCARE', 'ADT', 'KENYAEMR', 'T4A']}
         ]
     }
 }
