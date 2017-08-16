@@ -4,6 +4,7 @@ import { Header, Grid, Segment, Label, Divider } from 'semantic-ui-react'
 import { MainContent } from '../../shared/Content/MainContent'
 import { Subscriber } from './Subscriber'
 import { messageSubscribersData } from '../../../utils/data.utils'
+import { SubscriptionForm } from './SubscriptionForm'
 
 export class MessageSubscription extends Component {
 
@@ -19,7 +20,7 @@ export class MessageSubscription extends Component {
             <div>
                 <Header as='h2' className="sub-header-text">Message Subscription</Header>
                 <MainContent>
-                     <Grid columns={1}>
+                     <Grid columns={2}>
                         <Grid.Column width={13} className="grid-subscriptions">
                             <Header as='h3' className="stats-header">Message types and their subscriptions</Header>
                             <Divider/>
@@ -30,6 +31,9 @@ export class MessageSubscription extends Component {
                                 {SubscribersLabels}
                             </Segment>
                             <Link to="/" className="link-new-subscriptions">Add Subscription</Link>
+                        </Grid.Column>
+                        <Grid.Column width={6} className="grid-subscriptions-form">
+                            <SubscriptionForm/>
                         </Grid.Column>
                     </Grid>
                 </MainContent>

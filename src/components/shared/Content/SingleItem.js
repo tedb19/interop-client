@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { Divider, Header, List, Segment, Label } from 'semantic-ui-react'
+import { Divider, Label } from 'semantic-ui-react'
 
 export const SingleItem = (props) => {
     return (

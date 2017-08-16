@@ -113,7 +113,7 @@
   margin-top: 40px !important;
 }
   .grid-subscriptions {
-    padding: 40px !important;
+    padding-top: 40px !important;
     padding-left: 80px !important;
   }
   .segment-description {
@@ -123,4 +123,11 @@
   .link-unsubscribe {
     float: right;
     font-weight: bolder !important;
+  }
+  .segment-submission-form {
+    width: 100%;
+  }
+  .grid-subscriptions-form {
+    padding-left: 80px !important;
+    padding-top: -30px !important;
   }

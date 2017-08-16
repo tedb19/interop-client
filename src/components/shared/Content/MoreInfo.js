@@ -1,7 +1,5 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
-import { Container, Divider, Header, List, Segment, Label } from 'semantic-ui-react'
-import { ListItem } from '../../shared/LabelList/ListItem'
+import { Container, Divider, Header, Segment, Label } from 'semantic-ui-react'
 import { SingleItem } from './SingleItem'
 
 export const MoreInfo = (props) => {
@@ -13,7 +11,7 @@ export const MoreInfo = (props) => {
                         key={Math.random()}
                         color={colors[idx]}
                         name={dataItem.name}
-                        description={dataItem.description}
+                        description={dataItem.description.substring(0, 100)}
                         toLink={dataItem.editLink}/>
         })
     }
@@ -28,8 +26,6 @@ export const MoreInfo = (props) => {
                 <Divider className="stats-divider"/>
                  {ListItems(props.data)}
             </Segment>
-
-            
         </Container>
     )
 }

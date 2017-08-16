@@ -61,7 +61,7 @@ export class MessageTypes extends Component {
                             tableRows={TableRows}
                             updateLink={updateLink}>
                             <MoreInfo
-                                heading="Entities Subscribed To This Message Type:"
+                                heading="Entities subscribed to this message type:"
                                 data={entities}
                                 addLinkUrl={addLinkUrl}
                                 addLinkText='Add subscription'/>

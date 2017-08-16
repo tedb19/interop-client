@@ -38,9 +38,9 @@ export class Entities extends Component {
         const updateLink = <Link to='/update-entity'>Update entity details</Link>
         const unsubscribeLink = (name) => `/Entities/${this.state.ActiveEntityMenuItem}/Subscription/${name}/Unsubscribe`
         const messageTypes = [
-            {name: 'Patient Registration (ADT^A04)', description: 'The Electronic Medical Record sytem used at the CCC for patients\' CARE management. ', color: 'purple', editLink: unsubscribeLink('Patient-Registration'), editText: 'Unsubscribe'},
-            {name: 'Patient Update (ADT^A08)', description: 'The patient update message.', color: 'purple', editLink: unsubscribeLink('Patient-Update'), editText: 'Unsubscribe'},
-            {name: 'Pharmacy Order (RDE^R01)', description: 'The pharmacy order message.', color: 'purple', editLink: unsubscribeLink('Pharmacy-Order'), editText: 'Unsubscribe'}
+            {name: 'Patient Registration', description: 'The Electronic Medical Record sytem used at the CCC for patients\' CARE management. ', color: 'purple', editLink: unsubscribeLink('Patient-Registration'), editText: 'Unsubscribe'},
+            {name: 'Patient Update', description: 'The patient update message.', color: 'purple', editLink: unsubscribeLink('Patient-Update'), editText: 'Unsubscribe'},
+            {name: 'Pharmacy Order', description: 'The pharmacy order message.', color: 'purple', editLink: unsubscribeLink('Pharmacy-Order'), editText: 'Unsubscribe'}
         ]
         return (
             <Grid columns={12}>
@@ -64,6 +64,7 @@ export class Entities extends Component {
                                 data={messageTypes}
                                 addLinkUrl={addLinkUrl}
                                 addLinkText='Subscribe To Message Type'/>
+                            <Link to='/'>Add subscription</Link>
                     </Detail>
                 </Grid.Column>
             </Grid>
