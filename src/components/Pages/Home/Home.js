@@ -45,9 +45,7 @@ export class Home extends Component  {
                                 theme={VictoryTheme.material}
                                 style={{ labels: { fill: "black", fontSize: 14, fontWeight: "bold" } }}
                                 height={350}
-                                animate={{
-                                    duration: 2000
-                                    }}
+                                animate={{ duration: 2000, onLoad: { duration: 1000 } }}
                                 />
                         </Grid.Column>
                         <Grid.Column width={13}></Grid.Column>

@@ -11,6 +11,7 @@ export const Detail  = (props) => {
                 <Grid.Column className="content-segment-column">
                 <Segment raised className="content-segment">
                     <RibbonSection heading={props.heading} color="orange">
+                        {props.messages}
                         <Table celled striped>
                             <Table.Body>
                                 

@@ -24,7 +24,24 @@
     margin-top: 20px;
     text-align: center;
 }
-
+.new-address-input{
+  margin-right: 1vw;
+  width: 190px;
+  font-size: 13px !important;
+}
+.new-address-data{
+  margin-right: 1vw;
+  color: darkviolet;
+}
+.notifications-table-date {
+  float: right;
+  font-weight: 900;
+  padding: 10px;
+}
+.notifications-table-log{
+  padding: 6px;
+  line-height: 160%;
+}
 .header-text {
   color: #2ecc71 !important;
 }
@@ -37,10 +54,18 @@
 .icon {
   color: #2ecc71;
 }
-
+.singleitem {
+  padding: 5px;
+}
+.singleitem-color-label {
+  font-size: .99rem !important;
+}
 .content-segment-column {
   width: 100% !important;
   padding-top: 55px !important;
+}
+.new-address-button{
+  font-size: .85714286rem !important;
 }
 .content-segment {
   background-color: aliceblue !important;
@@ -98,19 +123,27 @@
     float: left;
     font-size: 18px !important;
 }
+.single-item-divider {
+  clear: both;
+}
+.logs-listing-container {
+  width: 100% !important;
+}
   .stats-sub-header-right {
     text-align: center;
     background: #1b1c1d !important;
     color: orange !important;
     font-style: italic;
     float: right;
-    font-size: 18px !important;
+    font-size: 13px !important;
 }
   .stats-divider {
     clear: both;
   }
 .segment-subscriptions {
-  margin-top: 40px !important;
+  margin-top: 25px !important;
+  margin-left: 20px !important;
+  margin-right: 20px !important;
 }
   .grid-subscriptions {
     padding-top: 40px !important;
@@ -119,15 +152,93 @@
   .segment-description {
     color: darkgray;
     padding-left: 5px;
+    font-size: initial !important;
+  }
+  .notifications-search-input{
+    float: right;
+    margin-right: 20px;
+    width: 250px;
+    font-size: 13px !important;
+  }
+  .notifications-toggle-errors {
+    margin-left: 1vw;
+    font-style: italic !important;
+    font-size: 14px !important;
+    font-weight: 900;
   }
   .link-unsubscribe {
     float: right;
     font-weight: bolder !important;
+    margin-bottom: 14px;
+  }
+  .ui.dimmer{
+    height: 120px !important;
+  }
+  .notifications-content-area{
+    margin-top: -20px;
+  }
+  .singlelog-color-label .icon.circle {
+    color: white !important;
   }
   .segment-submission-form {
     width: 100%;
+  }
+  .info-modal-footer {
+    color: green;
+    font-weight: bolder;
+    font-size: 17px;
   }
   .grid-subscriptions-form {
     padding-left: 80px !important;
     padding-top: -30px !important;
   }
+  .subscriber-pool-conatiner {
+    background-color: beige;
+    border: blanchedalmond;
+    padding: 40px;
+    padding-top: 20px;
+    display: block;
+  }
+.modal-content {
+  padding: 20px;
+  
+}
+.modal-content-question {
+  padding-top: 4vh !important;
+  font-size: 17px !important;
+}
+.modal-header {
+  background-color: aliceblue !important;
+}
+.modal-footer {
+  background-color: aliceblue !important;
+}
+i.info.circle.icon {
+  color: #e67e22 !important;
+}
+.App-logo {
+  animation: App-logo-spin infinite 10s linear !important;
+  height: 30px !important;
+  width: 30px !important;
+  margin-right: 10px !important;
+}
+
+@keyframes App-logo-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+.singlelog-color-label {
+  font-size: 11px;
+}
+.segment-log-date {
+  float: right;
+  font-size: small;
+  padding: 4px;
+}
+.facility-name {
+  color: orange;
+  font-size: 15px;
+  font-style: italic;
+  font-weight: 600;
+  margin-top: 5px;
+}

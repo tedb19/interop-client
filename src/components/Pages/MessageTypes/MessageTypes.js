@@ -2,19 +2,19 @@ import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import titleCase from 'title-case'
 
-import { Header, Grid } from 'semantic-ui-react'
+import { Header, Grid, Image } from 'semantic-ui-react'
 import { MessageTypesMenu } from './MessageTypesMenu'
 import { MoreInfo } from '../../shared/Content/MoreInfo'
 import { Detail } from '../../shared/Content/Detail'
 import { TableRow } from '../../shared/Table/TableRow'
 import { StatusLabel } from '../../shared/Misc/StatusLabel'
-
-import { DefaultMessageTypeForMenu, messageTypesSecondaryMenuData, getMessageTypeObj } from '../../../utils/data.utils'
+import { InfoModal } from '../../shared/Modal/InfoModal'
+import { DefaultMessageTypeForMenu, messageTypesSecondaryMenuData, getMessageTypeObj, entitiesSubscribedTo } from '../../../utils/data.utils'
 
 export class MessageTypes extends Component {
 
     state = {
-        ActiveMessageTypeMenuItem: DefaultMessageTypeForMenu().name,
+        ActiveMessageTypeMenuItem: this.props.match.params.name || DefaultMessageTypeForMenu().name,
         MessageTypeMenuData: messageTypesSecondaryMenuData()
     }
 
@@ -25,24 +25,29 @@ export class MessageTypes extends Component {
 
         const TableRows = []
         for(var item in data){
-            if(item === 'id') continue
+            if(['id', 'color', 'createdAt', 'updatedAt'].includes(item)) continue
             if(item === 'status') {
                 const status = data[item] === 'ACTIVE' ? StatusLabel('green', data[item]) : StatusLabel('red', data[item])
                 TableRows.push(<TableRow key={item} name={titleCase(item)} value={data[item] ? status : 'Not specified'}/>)
+            } else if(item === 'verboseName') {
+                TableRows.push(<TableRow key={item} name={titleCase(item)} value={titleCase(data[item].replace(/_/g, ' '))}/>)
             } else {
                 TableRows.push(<TableRow key={item} name={titleCase(item)} value={data[item] ? data[item] : 'Not specified'}/>)
             }
         }
         
-        const updateLink = <Link to='/update-message-type'>Update message type details</Link>
-        const unsubscribeLink = (name) => `/Message-Types/${this.state.ActiveMessageTypeMenuItem}/Subscription/${name}/Unsubscribe`
+        const messageExample = <Link to='#'>view message</Link>
+        const messageImage = (imgName) => <Image src={require(`../../../images/${imgName}.PNG`)} wrapped alt="Message Not Uploaded Yet"/>
+        const messageFooter = <p className="info-modal-footer">Message Version: 1.0</p>
+        const entities = entitiesSubscribedTo(this.state.ActiveMessageTypeMenuItem.replace(/ /g,'_').toUpperCase())
 
-        const entities = [
-            {name: 'ADT', description: 'Dispensing application', color: 'purple', editLink: unsubscribeLink('ADT'), editText: 'Unsubscribe'},
-            {name: 'IQCARE', description: 'The EMR application', color: 'purple', editLink: unsubscribeLink('IQCARE'), editText: 'Unsubscribe'},
-            {name: 'T4A', description: 'The scheduling system', color: 'purple', editLink: unsubscribeLink('T4A'), editText: 'Unsubscribe'}
-        ]
-        const addLinkUrl = `/Message-Types/${this.state.ActiveMessageTypeMenuItem.replace(/ /g,'-')}/Add-Subscription`
+        const infoModal = <InfoModal
+                                trigger={messageExample}
+                                size="large"
+                                header={titleCase(data.verboseName) + ' Message:'}
+                                content={messageImage(this.state.ActiveMessageTypeMenuItem.replace(/ /g, '-'))}
+                                footer={messageFooter}
+                                />
         return (
                 <Grid columns={12}>
                     <Grid.Column width={2}>
@@ -53,18 +58,20 @@ export class MessageTypes extends Component {
                             messageTypes={this.state.MessageTypeMenuData}
                             />
                         <br/>
-                        <span><Link to="/new-message-type">Add new message type</Link></span>
+                        <span><Link to="#">Add new message type</Link></span>
                     </Grid.Column>
                     <Grid.Column width={10} className="content-area">
                         <Detail
                             heading="Message Type Overview"
                             tableRows={TableRows}
-                            updateLink={updateLink}>
+                            updateLink={infoModal}>
+                            
                             <MoreInfo
                                 heading="Entities subscribed to this message type:"
                                 data={entities}
-                                addLinkUrl={addLinkUrl}
-                                addLinkText='Add subscription'/>
+                                addLinkUrl="#"
+                                addLinkText='Add subscription'
+                                leftSubheading='Entities'/>
                         </Detail>
                     </Grid.Column>
                 </Grid>

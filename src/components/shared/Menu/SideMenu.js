@@ -6,9 +6,10 @@ import { MenuItem } from './MenuItem'
 export const SideMenu = (props) => {
     const menuItemsSettings = [
         {name: "Home", icon: "home"},
-        {name: "Message Subscription", icon: "sitemap"},
+        {name: "Participating Systems", icon: "database"},
         {name: "Message Type", icon: "comment outline"},
-        {name: "Entities", icon: "database"},
+        {name: "Message Subscription", icon: "sitemap"},
+        {name: "Notifications", icon: "tasks"},
         {name: "Settings", icon: "settings"}
     ]
 

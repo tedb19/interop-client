@@ -11,7 +11,7 @@ export const EntitiesMenu = (props) => {
             handleItemClick={props.handleEntityMenuItemClick}
             activeItem={props.activeItem}
             data={props.entities}
-            mainMenu="Entities"/>
+            mainMenu="Participating-Systems"/>
     )
 }
 
