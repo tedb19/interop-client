@@ -24,6 +24,15 @@
     margin-top: 20px;
     text-align: center;
 }
+.form-modal-span {
+  padding: 5px;
+  margin-bottom: 10px;
+  background-color: lightgrey;
+}
+.modal-footer-span {
+  color: orange;
+  font-style: italic;
+}
 .new-address-input{
   margin-right: 1vw;
   width: 190px;
@@ -32,6 +41,10 @@
 .new-address-data{
   margin-right: 1vw;
   color: darkviolet;
+}
+.modal-form {
+  margin-top: 20px;
+  margin-bottom: 20px;
 }
 .notifications-table-date {
   float: right;
@@ -152,7 +165,6 @@
   .segment-description {
     color: darkgray;
     padding-left: 5px;
-    font-size: initial !important;
   }
   .notifications-search-input{
     float: right;
@@ -166,17 +178,16 @@
     font-size: 14px !important;
     font-weight: 900;
   }
+
   .link-unsubscribe {
     float: right;
     font-weight: bolder !important;
     margin-bottom: 14px;
   }
-  .ui.dimmer{
-    height: 120px !important;
-  }
   .notifications-content-area{
     margin-top: -20px;
   }
+ 
   .singlelog-color-label .icon.circle {
     color: white !important;
   }
@@ -209,9 +220,11 @@
 }
 .modal-header {
   background-color: aliceblue !important;
+  font-size: 17px !important;
 }
 .modal-footer {
   background-color: aliceblue !important;
+  padding: 20px !important;
 }
 i.info.circle.icon {
   color: #e67e22 !important;

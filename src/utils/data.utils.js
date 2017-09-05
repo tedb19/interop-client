@@ -36,7 +36,6 @@ export const getSearchedLogs = async (searchTerm, page) => {
 export const getLogsCount = async () => {
     const endPoint = `${ROOT_URL}/logs/count`
     const data = await axios.get(endPoint)
-    console.log(data)
     return data
 }
 
@@ -44,6 +43,21 @@ export const saveSubscription = async (subscription) => {
     const url = `${ROOT_URL}/subscribers`
     const method = 'post'
     const { data } = await axios({ method , url, data: subscription })
+    return data
+}
+
+export const saveMessageType = async (messageType) => {
+    const url = `${ROOT_URL}/messagetypes`
+    const method = 'post'
+    const { data } = await axios({ method , url, data: messageType })
+    return data
+}
+
+export const addMessageType = async (messageType) => {
+    await saveMessageType(messageType)
+    localStorage.removeItem('messagetypes')
+    localStorage.removeItem('subscribers')
+    const data = await Promise.all([getData('subscribers'), getData('messagetypes')])
     return data
 }
 
@@ -104,7 +118,7 @@ export const entitiesSubscribedTo = (messageType) => {
     const messageTypeSubscribers = subscribers.find(subscriber => {
         return subscriber.messageType === messageType
     })
-    console.log('messageTypeSubscribers', messageTypeSubscribers)
+    if(!messageTypeSubscribers) return []
     const entities = messageTypeSubscribers.subscribers.map(subscriber => {
         const newEntity = Object.assign({}, getEntityObj(subscriber.name), {editLink: `/Message-Type/${messageType}/Subscription/${subscriber}/Unsubscribe`})
         return newEntity
@@ -123,3 +137,4 @@ export const getMessageTypeObj = (name) => getContextData('messagetypes').find((
 export const DefaultMessageTypeForMenu = () => messageTypesSecondaryMenuData().find((msgType, idx) => idx === 0)
 
 export const DefaultEntityForMenu = () => entitiesSecondaryMenuData().find((entity, idx) => idx === 0)
+

@@ -26,7 +26,7 @@ export const LogListing = (props) => {
             key={Math.random()}
             color={color}
             level={log.level}
-            detail={log.id + log.log}
+            detail={log.log}
             date={dateFormat(log.createdAt, "ddd mmm dS, yyyy - h:MM:ss TT")}/>
     })
 
