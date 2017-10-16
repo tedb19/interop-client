@@ -20,7 +20,7 @@ export const SecondaryMenu = (props) => {
     })
 
     return (
-        <Menu icon='labeled' vertical pointing>
+        <Menu icon='labeled' vertical pointing className="secondary-menu">
             {MenuItems}
         </Menu>
     )

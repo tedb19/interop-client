@@ -7,11 +7,13 @@ import { SecondaryMenu } from '../../shared/Menu/SecondaryMenu'
 export const EntitiesMenu = (props) => {
 
     return (
+        props.entities ? 
         <SecondaryMenu
             handleItemClick={props.handleEntityMenuItemClick}
             activeItem={props.activeItem}
             data={props.entities}
             mainMenu="Participating-Systems"/>
+            : null
     )
 }
 

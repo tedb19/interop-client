@@ -8,7 +8,7 @@ export const FormModal = (props) => {
         <Modal closeIcon='close' size={size} trigger={props.trigger} actions={actions} className="info-modal" open={props.modalOpen}
         onClose={props.handleClose}>
             <Modal.Header className="modal-header">
-            New message type:
+            New system:
             </Modal.Header>
             <Modal.Content className="modal-content">
                 {props.errorMessage ?
@@ -26,10 +26,9 @@ export const FormModal = (props) => {
                     <Icon name="lightbulb" color="orange"/>
                     <Message.Content>
                         <Message.Header>Quick Note</Message.Header>
-                        Adding a new message type means the participating systems can now begin exchanging information using this message type.
-                        The new message type must be based on <a href="https://www.hl7.org/implement/standards/product_brief.cfm?product_id=148"><u>hl7 v2</u></a>,
-                         and must contain atleast all the data elements contained on the <strong><u>green card</u></strong>,
-                        and additionally can contain any other partner-specific data elements.
+                        Adding a system means it will be available to participate on the integration.
+                        However, the system will not be <strong>ACTIVE</strong> until it's assigned a valid address.
+                        This will be done at the facility.
                     </Message.Content>
                 </Message>
                     
@@ -40,14 +39,9 @@ export const FormModal = (props) => {
                              iconPosition="left" name="name"
                              value={props.name}
                              onChange={props.handleNameChange}/>
-                        <Form.Field control={Input} label='Verbose name' required
-                             placeholder='Verbose name..' icon="edit"
-                             iconPosition="left" name="verboseName"
-                             value={props.verboseName}
-                             onChange={props.handleVerboseNameChange}/>
                     </Form.Group>
                     <Form.Field control={TextArea} label='Description' required
-                         placeholder='A brief description about the message type..' name="description"
+                         placeholder='A brief description about the system..' name="description"
                          value={props.description}
                          onChange={props.handleDescriptionChange}/>
                     <Button.Group>
@@ -58,7 +52,7 @@ export const FormModal = (props) => {
                 </Form>
             </Modal.Content>
             <Modal.Actions className="modal-footer">
-                <span className="modal-footer-span">Hl7 v2 compliant message</span>
+                <span className="modal-footer-span">Participating system</span>
             </Modal.Actions>
         </Modal>
     )

@@ -2,10 +2,12 @@ import React, {Component} from 'react'
 import { Header, Grid, Segment, Label, Divider } from 'semantic-ui-react'
 import { MainContent } from '../../shared/Content/MainContent'
 import { MessageTypeSubscriber } from './MessageTypeSubscribers'
-import { addSubscription, removeSubscription, getContextData, entitiesSubscribedTo } from '../../../utils/data.utils'
+import { addSubscription, removeSubscription, getData, entitiesSubscribedTo } from '../../../utils/data.utils'
 import { SubscriberPool } from './SubscriberPool'
 import { DialogModal } from '../../shared/Modal/DialogModal'
 import { InfoMessage } from '../../shared/Modal/InfoMessage'
+import { CircularLoader } from '../../shared/Loader/CircularLoader'
+import titleCase from 'title-case'
 
 export class MessageSubscription extends Component {
 
@@ -21,8 +23,11 @@ export class MessageSubscription extends Component {
         entities: null
     }
 
-    componentWillMount() {
-        this.setState({ entities: getContextData('entities'), subscriptions: getContextData('subscribers') })
+    async componentWillMount() {
+        const [ entities, subscriptions ] = await Promise.all([
+            getData('entities'), getData('subscribers')
+        ])
+        this.setState({ entities , subscriptions })
     }
 
     newSubscriptionDialogOnClose = () => this.setState({ newSubscriptionDialogOpen: false })
@@ -41,20 +46,33 @@ export class MessageSubscription extends Component {
     handleDialogButtonClicked = (key) => {
         if(key === 'Yes' && this.state.newSubscriptionDialogOpen){
             addSubscription(this.state.currentMessageType, this.state.currentEntity)
-                .then( subscriptions => {
-                    this.setState({subscriptions: getContextData('subscribers'), newSubscriptionMessageOpen: true })
-                })
-        } else if(key === 'Yes' && this.state.unsubscribeDialogOpen){
-            removeSubscription(this.state.currentMessageType.replace(/ /g, '_'), this.state.currentEntity)
+                .then( subscriptions => getData('subscribers'))
                 .then(subscriptions => {
                     this.setState({
-                        subscriptions: getContextData('subscribers'),
-                        unsubscribeMessageOpen: true
-                   })
-                })
+                        subscriptions,
+                        newSubscriptionMessageOpen: true,
+                        newSubscriptionDialogOpen: false
+                    })
+                    this.handleInfoOnDismiss()
+                }).catch(console.log)
+        } else if(key === 'Yes' && this.state.unsubscribeDialogOpen){
+            removeSubscription(this.state.currentMessageType.replace(/ /g, '_'), this.state.currentEntity)
+                .then(subscriptions => getData('subscribers'))
+                .then(subscriptions => {
+                    this.setState({
+                        subscriptions,
+                        unsubscribeMessageOpen: true,
+                        unsubscribeDialogOpen: false
+                    })
+                    this.handleInfoOnDismiss()
+                }).catch(console.log)
+        } else if(key === 'No') {
+            this.setState({
+                unsubscribeDialogOpen: false,
+                newSubscriptionDialogOpen: false
+            })
         }
-        this.setState({ newSubscriptionDialogOpen: false, unsubscribeDialogOpen: false })
-        this.handleInfoOnDismiss() 
+         
     }
 
     handleduplicateSubscriptionDialogButtonClicked = (key) => {
@@ -69,31 +87,42 @@ export class MessageSubscription extends Component {
         }, 4000)
     }
 
-    render() {
-        const SubscribersLabels = this.state.subscriptions
-            .map(subscriber => 
-                <MessageTypeSubscriber
-                    key={subscriber.messageType.replace(/_/g, '')}
-                    messageType={subscriber.messageType.replace(/_/g, ' ')}
-                    subscribers={subscriber.subscribers}
-                    handleSubscriberClick={this.handleSubscriberClick}
-                    onDrop={(data) => {
-                        const entities = entitiesSubscribedTo(subscriber.messageType)
-                        const entity = entities.find(entity => entity.name === data.subscribers)
-                        entity ?
-                            this.setState({
-                                 currentMessageType: subscriber.messageType, 
-                                 currentEntity: data.subscribers, 
-                                 duplicateSubscriptionDialogOpen: true
-                            }) :
-                            this.setState({
-                                 currentMessageType: subscriber.messageType, 
-                                 currentEntity: data.subscribers,
-                                 newSubscriptionDialogOpen: true 
-                            })
-                    }}/>
-            )
+    subscribersLabels = () => {
+        const labels = this.state.subscriptions ? 
+            this.state.subscriptions
+                .map(subscriber => {
+                    return (
+                        <MessageTypeSubscriber
+                            key={subscriber.messageType.replace(/_/g, '')}
+                            messageType={subscriber.messageType.replace(/_/g, ' ')}
+                            subscribers={subscriber.subscribers}
+                            handleSubscriberClick={this.handleSubscriberClick}
+                            onDrop={(data) => {
+                                const messageTypeName = titleCase(subscriber.messageType)
+                                entitiesSubscribedTo(messageTypeName)
+                                    .then(entities => {
+                                        const entity = entities.find(entity => entity.name === data.subscribers)
+                                        entity ?
+                                            this.setState({
+                                                currentMessageType: subscriber.messageType, 
+                                                currentEntity: data.subscribers, 
+                                                duplicateSubscriptionDialogOpen: true
+                                            }) :
+                                            this.setState({
+                                                currentMessageType: subscriber.messageType, 
+                                                currentEntity: data.subscribers,
+                                                newSubscriptionDialogOpen: true 
+                                            })
+                                    }).catch(console.log)
+                            }}/>
+                    )
+                }) :
+            <CircularLoader />
+        return labels
+    }
 
+    render() {
+        const SubscribersLabels = this.subscribersLabels()
         const subscriptionMessages = {
             dialogConfirmationMsg: <p>Subscribe <strong>{this.state.currentEntity}</strong> to the <strong>{this.state.currentMessageType.replace(/_/g, ' ')}</strong> message type?</p>,
             messageContent: `${this.state.currentEntity} has been successfully subscribed to the ${this.state.currentMessageType} message type.`,

@@ -6,25 +6,31 @@ import dateFormat from 'dateformat'
 export const LogListing = (props) => {
     const logs = props.logs.map(log => {
         let color = ''
+        let name = ''
 
         switch(log.level){
             case 'INFO':
                 color = 'green'
+                name = 'info circle'
                 break
             case 'ERROR':
                 color = 'red'
+                name = 'cancel circle'
                 break
             case 'WARNING':
                 color = 'yellow'
+                name = 'exclamation circle'
                 break
             default:
                 color = 'green'
+                name = 'info circle'
                 break
         }
 
         return <SingleLog
             key={Math.random()}
             color={color}
+            name={name}
             level={log.level}
             detail={log.log}
             date={dateFormat(log.createdAt, "ddd mmm dS, yyyy - h:MM:ss TT")}/>

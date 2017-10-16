@@ -13,16 +13,64 @@
   padding: 20px;
   color: white;
 }
-
 .App-intro {
   font-size: large;
 }
 .main-menu {
     text-align: center;
 }
+.total-received {
+  margin-top: 80px !important;
+  width: 160px;
+  font-size: 15px !important;
+  margin-left: 120px !important;
+}
 .header-section {
     margin-top: 20px;
     text-align: center;
+}
+.single-message-type-stats-divider{
+  clear: both;
+}
+.system-status-label {
+  width: 17px !important;
+  height: 17px !important;
+  margin-right: 8px !important;
+}
+
+.system-address-meta-date {
+  font-size: 12px !important;
+}
+.addresses {
+  margin-bottom: 10px !important;
+}
+
+.address-card-group {
+  margin-bottom: 10px !important;
+}
+.ui.card .meta, .ui.cards>.card .meta {
+  font-size: 12px !important;
+}
+.ui.card>.extra {
+  font-weight: 900 !important;
+  text-align: center;
+  font-size: 17px !important;
+}
+.address-card-group>.ui>.content>.header {
+  color: blue !important;
+}
+
+.address-status {
+  float: right;
+}
+.system-address-area {
+  background: lightcyan !important;
+  text-align: center !important;
+}
+.system-address {
+  font-size: 14px;
+  color: teal;
+  font-weight: bolder;
 }
 .form-modal-span {
   padding: 5px;
@@ -33,9 +81,12 @@
   color: orange;
   font-style: italic;
 }
+.address-card-header {
+  font-size: 14px !important;
+}
 .new-address-input{
-  margin-right: 1vw;
-  width: 190px;
+  margin-top: 10px;
+  width: 210px;
   font-size: 13px !important;
 }
 .new-address-data{
@@ -57,22 +108,25 @@
 }
 .header-text {
   color: #2ecc71 !important;
+  font-size: 22px !important;
+}
+.secondary-menu {
+  min-width: 10vw !important;
 }
 .sub-header-text {
     color: #e67e22 !important;
     text-decoration: none;
-    font-size: 22px !important;
+    font-size: 17px !important;
     margin-bottom: 2px !important;
 }
 .icon {
   color: #2ecc71;
 }
+
 .singleitem {
   padding: 5px;
 }
-.singleitem-color-label {
-  font-size: .99rem !important;
-}
+
 .content-segment-column {
   width: 100% !important;
   padding-top: 55px !important;
@@ -103,14 +157,25 @@
 .main-content {
   margin-top: 6px !important;
 }
+.dahsboard-more-info {
+  padding: 3px;
+}
 .chart-header {
   text-align: center;
+  margin-bottom: -60px !important;
+  font-size: 15px !important;
+  color: green !important;
+}
+.line-graph-header {
+  text-align: center;
+  font-size: 15px !important;
   margin-bottom: -20px !important;
   color: green !important;
 }
 .stats-header {
   text-align: center;
   color: green !important;
+  font-size: 15px !important;
 }
 .stats-circular-data {
   float: right;
@@ -122,6 +187,7 @@
     background: #1b1c1d !important;
     color: white !important;
     font-style: italic;
+    font-size: 14px !important;
 }
 .entity-circular-data {
     float: right;
@@ -134,7 +200,7 @@
     color: orange !important;
     font-style: italic;
     float: left;
-    font-size: 18px !important;
+    font-size: 16px !important;
 }
 .single-item-divider {
   clear: both;
@@ -148,7 +214,7 @@
     color: orange !important;
     font-style: italic;
     float: right;
-    font-size: 13px !important;
+    font-size: 14px !important;
 }
   .stats-divider {
     clear: both;
@@ -163,7 +229,6 @@
     padding-left: 80px !important;
   }
   .segment-description {
-    color: darkgray;
     padding-left: 5px;
   }
   .notifications-search-input{
@@ -241,12 +306,13 @@ i.info.circle.icon {
   to { transform: rotate(360deg); }
 }
 .singlelog-color-label {
-  font-size: 11px;
+  font-size: 1.2em!important;
 }
 .segment-log-date {
   float: right;
   font-size: small;
   padding: 4px;
+  color: darkgray;
 }
 .facility-name {
   color: orange;

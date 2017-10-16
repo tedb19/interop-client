@@ -26,18 +26,18 @@ class App extends Component {
           <HeaderGrid/>
           <Divider/>
           <Grid.Row>
-              <Grid.Column width={1}></Grid.Column>
+              <Grid.Column width={2}></Grid.Column>
               <Grid.Column width={2} className="main-menu">
                   <SideMenu
                       handleItemClick={this.handleMainMenuItemClick}
                       activeItem={this.state.ActiveMenuItem}/>
               </Grid.Column>
-              <Grid.Column width={13}>
+              <Grid.Column width={12}>
                 <Main/>
               </Grid.Column>
           </Grid.Row>
         </Grid>
-    );
+    )
   }
 }
 

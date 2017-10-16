@@ -1,16 +1,17 @@
 {
   "name": "interop-client",
   "version": "0.1.0",
-  "private": true,
   "dependencies": {
     "axios": "^0.16.2",
     "dateformat": "^2.0.0",
     "file-exists": "^4.0.0",
+    "pretty-data": "^0.40.0",
     "prop-types": "^15.5.10",
     "rc-tooltip": "^3.4.8",
     "react": "^15.6.1",
     "react-dom": "^15.6.1",
     "react-drag-and-drop": "^2.4.0",
+    "react-json-view": "^1.12.1",
     "react-router-dom": "^4.1.2",
     "react-scripts": "1.0.11",
     "semantic-ui-css": "^2.2.12",

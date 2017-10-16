@@ -1,9 +1,10 @@
 import React, { Component} from 'react'
-import { Header, Grid, Divider, Dimmer, Loader, Input, Checkbox } from 'semantic-ui-react'
+import { Header, Grid, Divider, Input, Checkbox } from 'semantic-ui-react'
 import { MainContent } from '../../shared/Content/MainContent'
 import { LogListing } from './LogListing'
 import { getLogs, getToggledLogs, getSearchedLogs } from '../../../utils/data.utils'
 import { PaginationMenu } from './PaginationMenu'
+import { CircularLoader } from '../../shared/Loader/CircularLoader'
 
 export class Notifications extends Component {
 
@@ -18,29 +19,29 @@ export class Notifications extends Component {
     componentWillMount() {
         getLogs(parseInt(this.state.activeItem, 10) - 1)
             .then(logs => this.setState({ logs: logs.result, pages: logs.pages }))
-            .catch(error => console.log(error))
+            .catch(console.log)
     }
 
     handleItemClick = (e, { name }) => {
-        this.setState({ activeItem: name })
         !this.state.toggleErrors 
-            ? getToggledLogs('ERROR', parseInt(this.state.activeItem, 10) - 1)
-                .then(logs => this.setState({ logs: logs.result, pages: logs.pages }))
-                .catch(error => console.log(error))
-            : getLogs(parseInt(this.state.activeItem, 10) - 1)
-                .then(logs => this.setState({ logs: logs.result, pages: logs.pages }))
-                .catch(error => console.log(error))
+            ? getToggledLogs('ERROR', parseInt(name, 10) - 1)
+                .then(logs => this.setState({ logs: logs.result, pages: logs.pages, activeItem: name }))
+                .catch(console.log)
+            : getLogs(parseInt(name, 10) - 1)
+                .then(logs => this.setState({ logs: logs.result, pages: logs.pages, activeItem: name }))
+                .catch(console.log)
     }
 
     handleToggle = (e, { value }) => {
-        this.setState({ toggleErrors: !this.state.toggleErrors })
+        this.setState({ toggleErrors: !this.state.toggleErrors, activeItem: '1' })
+        const currentPage = 0
         value 
-            ? getToggledLogs('ERROR', parseInt(this.state.activeItem, 10) - 1)
+            ? getToggledLogs('ERROR', currentPage)
                 .then(logs => this.setState({ logs: logs.result, pages: logs.pages }))
-                .catch(error => console.log(error))
-            : getLogs(parseInt(this.state.activeItem, 10) - 1)
+                .catch(console.log)
+            : getLogs(currentPage)
                 .then(logs => this.setState({ logs: logs.result, pages: logs.pages }))
-                .catch(error => console.log(error))
+                .catch(console.log)
     }
 
     handleInputChange = (evt) => {
@@ -49,23 +50,18 @@ export class Notifications extends Component {
             
             getSearchedLogs(evt.target.value, 0)
                 .then(logs => this.setState({ logs: logs.result, pages: logs.pages }))
-                .catch(error => console.log(error))
+                .catch(console.log)
         } else {
             getLogs(parseInt(this.state.activeItem, 10) - 1)
                 .then(logs => this.setState({ logs: logs.result, pages: logs.pages }))
-                .catch(error => console.log(error))
+                .catch(console.log)
         }
     }
 
     render() {
-        const loader = (
-            <Dimmer active>
-                <Loader>Loading...</Loader>
-            </Dimmer>
-        )
         const logArea = this.state.logs ?
             <LogListing logs={this.state.logs} updateDate={this.state.time}/>
-            : loader
+            : <CircularLoader/>
         
          return  (
             <div>
