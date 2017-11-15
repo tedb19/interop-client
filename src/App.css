@@ -29,6 +29,11 @@
     margin-top: 20px;
     text-align: center;
 }
+.ui.teal.card, .ui.red.card{
+  width: 100vw !important;
+}
+.pie-chart {
+}
 .single-message-type-stats-divider{
   clear: both;
 }
@@ -162,7 +167,7 @@
 }
 .chart-header {
   text-align: center;
-  margin-bottom: -60px !important;
+  margin-bottom: -4vh !important;
   font-size: 15px !important;
   color: green !important;
 }
@@ -320,4 +325,20 @@ i.info.circle.icon {
   font-style: italic;
   font-weight: 600;
   margin-top: 5px;
+}
+.ui.small.text.loader:before {
+  border-color: red !important;
+}
+.ui.small.text.loader:after {
+  border-color: green transparent transparent !important;
+}
+.no-mesaages-span {
+  padding-top: 16vh;
+  padding-left: 3vw;
+  color: maroon;
+  font-weight: bolder;
+  font-size: 13px;
+}
+.dimmer-circular-loader {
+  opacity: 0;
 }

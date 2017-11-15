@@ -2,7 +2,9 @@ import React from 'react'
 import { Icon, Menu } from 'semantic-ui-react'
 
 export const PaginationMenu = (props) => {
-    const itemNumbers = Array(props.pages).fill(1).map((x, y) => x + y)
+    const MAX_PAGES = 15
+    const currentPages = props.pages > MAX_PAGES ? MAX_PAGES : props.pages
+    const itemNumbers = Array(currentPages).fill(1).map((x, y) => x + y)
     const MenuItems = itemNumbers.map(menuItem => 
         <Menu.Item 
             key={menuItem}

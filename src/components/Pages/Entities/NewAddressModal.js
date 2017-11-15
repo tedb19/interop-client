@@ -45,7 +45,8 @@ export const NewAddressModal = (props) => {
                                 onChange={props.handleProtocolChange}/>
                         </Form.Group>
                         <Form.Group widths='equal'>
-                            <Form.Field control={Input} label='Address' required
+                            <Form.Field control={Input} required
+                                label="Address"
                                 placeholder='Address...' icon="signal"
                                 iconPosition="left" name="address"
                                 value={props.address}

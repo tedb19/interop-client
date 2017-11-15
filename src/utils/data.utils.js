@@ -11,7 +11,7 @@ const expiryTime = () => {
     if(setTime) {
         const setTime = new Date(localStorage.getItem('setTime'))
         const milisecs = currentTime - setTime
-        const minutes = Math.round(((milisecs % 86400000) % 3600000) / 60000)
+        const minutes = Math.round(((milisecs % 86400000) % 3600000) / 6000)
         verdict = (minutes > 0.2) ? true : false
         if(verdict) localStorage.setItem('setTime', new Date().toString())
     } else {
@@ -78,13 +78,25 @@ export const saveMessageType = async (messageType) => {
     return data
 }
 
+export const getEntityAddress = async (entityId) => {
+    const url = `${ROOT_URL}/addresses/${entityId}`
+    const { data } = await axios.get(url)
+    const address = data.length ? data[0] : {}
+    return address
+}
+
+export const getActiveSystems = async () => {
+    const url = `${ROOT_URL}/activeSystems`
+    const { data } = await axios.get(url)
+    return data
+}
+
 export const saveAddress = async (address) => {
     const url = `${ROOT_URL}/addresses`
     const method = 'post'
     await axios({ method , url, data: address })
-    localStorage.removeItem('entities')
-    const entities = await getData('entities')
-    return entities
+    const newAddress = getEntityAddress(address.EntityId)
+    return newAddress
 }
 
 export const deleteAddress = (entityId) => {

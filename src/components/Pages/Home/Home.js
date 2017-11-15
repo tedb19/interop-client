@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Header, Grid, Segment, Label, Divider, Container, Message, Icon } from 'semantic-ui-react'
 import { MainContent } from '../../shared/Content/MainContent'
 import { VictoryChart, VictoryTheme, VictoryLine, VictoryPie, VictoryLabel } from 'victory'
-import { getStats } from '../../../utils/data.utils'
+import { getStats, getActiveSystems } from '../../../utils/data.utils'
 import { SingleMessageTypeStats } from './SingleMessageTypeStats'
 import { SingleSystemOnline } from './SingleSystemOnline'
 import { CircularLoader } from '../../shared/Loader/CircularLoader'
@@ -12,13 +12,13 @@ import dateFormat from 'dateformat'
 export class Home extends Component  {
 
     state = {
-        stats: []
+        stats: [],
+        activeSystems: []
     }
 
-    componentWillMount() {
-        getStats()
-            .then(data => this.setState({ stats: data.data }))
-            .catch(error => console.log(error))
+    async componentWillMount() {
+        const [data, activeSystems] = await Promise.all([getStats(), getActiveSystems()])
+        this.setState({ stats: data.data, activeSystems })
     }
 
     getStatValue = (name) => {
@@ -56,17 +56,22 @@ export class Home extends Component  {
     }
 
     systemsStats = () => {
-        let systemsStats = null
-        if(this.state.stats.length){
+        let systemsStats = []
+        if(this.state.stats.length && this.state.activeSystems.length){
             const stats = this.getAllStatValues('STATUS')
-            
-            systemsStats = stats.map((stat, idx) => {
-                const color = (stat.value === 'online') ? 'green' : 'red'
-                return <SingleSystemOnline
-                            key={Math.random()}
-                            color={color}
-                            system={stat.name}/>
+            stats.forEach((stat, idx) => {
+                const isActive = this.state.activeSystems.join(',').includes(stat.name.replace(/_STATUS/, ''))
+                if(isActive) {
+                    const color = (stat.value === 'online') ? 'green' : 'red'
+                    systemsStats.push(
+                        <SingleSystemOnline
+                        key={Math.random()}
+                        color={color}
+                        system={stat.name}/>
+                    )
+                }
             })
+            
         } else {
             systemsStats = <CircularLoader />
         }
@@ -107,14 +112,20 @@ export class Home extends Component  {
             const queued = parseInt(this.getStatValue('QUEUED'), 10)
             const errored = parseInt(this.getStatValue('ERRORED'), 10)
             const received = parseInt(this.getStatValue('RECEIVED'), 10)
+            let dataToShow = []
+            if(sent){
+                dataToShow.push({ x: "Submitted", y: sent/received, label: `Submitted (${sent})`})
+            } 
+            if(queued){
+                dataToShow.push({ x: "Queued", y: queued/received, label: `Queued (${queued})`})
+            }
+            if(errored){
+                dataToShow.push({ x: "Errors", y: errored/received, label: `Errors (${errored})`})
+            }
             
-            msgPieChart = <VictoryPie
+            msgPieChart = received ? <VictoryPie
                                 labelComponent={<VictoryLabel/>}
-                                data={[
-                                    { x: "Submitted", y: sent/received, label: `Submitted (${sent})`},
-                                    { x: "Queued", y: queued/received, label: `Queued (${queued})`},
-                                    { x: "Errors", y: errored/received, label: `Errors (${errored})`}
-                                ]}
+                                data={dataToShow}
                                 events={[
                                     {
                                         target: "data",
@@ -132,14 +143,16 @@ export class Home extends Component  {
                                     }
                                 ]}
                                 categories={{ x: ["Submitted", "Queued", "Errors"] }}
-                                colorScale={"heatmap"}
+                                colorScale={["green", "gold", "red"]}
                                 theme={VictoryTheme.material}
-                                style={{ labels: { fill: "maroon", fontSize: 9, fontWeight: "bolder" } }}
+                                className="pie-chart"
+                                style={{ labels: { fill: "maroon", fontSize: 11, fontWeight: "bolder", paddingTop: "1px" } }}
                                 height={300}
-                                />
+                                /> : <div className="no-mesaages-span">There are currently no messages exchanged!</div>
         } else {
             msgPieChart = <CircularLoader />
         }
+
         return msgPieChart
     }
 

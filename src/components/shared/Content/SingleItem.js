@@ -7,7 +7,7 @@ export const SingleItem = (props) => {
         <div className="singleitem">
             <Label color={props.color} key={Math.random()} className="singleitem-color-label">{props.name}</Label> 
             <span className="segment-description">{props.description}</span>
-            <Link to={props.toLink} className="link-unsubscribe">unsubscribe</Link>
+            <Link to='/Message-Subscription' className="link-unsubscribe">unsubscribe</Link>
             <Divider className="single-item-divider"/>
         </div>
     )

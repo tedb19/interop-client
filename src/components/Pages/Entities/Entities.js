@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import titleCase from 'title-case'
 import 'rc-tooltip/assets/bootstrap.css'
-import { Header, Grid, Button, Icon, Message, Table } from 'semantic-ui-react'
+import { Header, Grid, Message, Table } from 'semantic-ui-react'
 import { EntitiesMenu } from './EntitiesMenu'
 import { MoreInfo } from '../../shared/Content/MoreInfo'
 import { Detail } from '../../shared/Content/Detail'
@@ -11,7 +11,7 @@ import { StatusLabel } from '../../shared/Misc/StatusLabel'
 import { FormModal } from './FormModal'
 import { CircularLoader } from '../../shared/Loader/CircularLoader'
 import { config } from '../../../utils/config.util'
-import { entitiesSecondaryMenuData, getEntityObj, deleteAddress, saveAddress, saveStat, messageTypesSubscribedTo, addEntity, getEntityColors } from '../../../utils/data.utils'
+import { entitiesSecondaryMenuData, getEntityObj, deleteAddress, saveAddress, saveStat, messageTypesSubscribedTo, addEntity, getEntityAddress, getEntityColors } from '../../../utils/data.utils'
 import { NewAddressModal } from './NewAddressModal'
 import dateFormat from 'dateformat'
 
@@ -38,7 +38,8 @@ export class Entities extends Component {
         tcpAddressInputVisible: false,
         httpContext: 'Update',
         tcpContext: 'Update',
-        addressMapping: []
+        addressMapping: [],
+        currentAddress: ''
     }
 
     handleEntityMenuItemClick = async (e, { name }) => {
@@ -46,26 +47,23 @@ export class Entities extends Component {
             [getEntityObj(name), messageTypesSubscribedTo(name)]
         )
 
-        if(entity.AddressMappings.length){
-            
-            entity.AddressMappings.forEach(addressMapping => {
-                const date = dateFormat(addressMapping.updatedAt, 'mmm dS, yyyy - h:MM TT')
-                this.setState({ 
-                    address: addressMapping.address,
-                    protocol: addressMapping.protocol,
-                    lastUpdated: date,
-                    entityStatus: 'ACTIVE'
-                })
+        const currentAddress = await getEntityAddress(entity.id)
+
+        if(currentAddress.hasOwnProperty('id')){
+            const date = dateFormat(currentAddress.updatedAt, 'mmm dS, yyyy - h:MM TT')
+            this.setState({ 
+                currentAddress: currentAddress.address,
+                protocol: currentAddress.protocol,
+                lastUpdated: date,
+                entityStatus: 'ACTIVE'
             })
         } else {
             this.setState({ 
-                address: '',
+                currentAddress: '',
                 protocol: '',
                 lastUpdated: 'Never been updated',
-                entityStatus: 'INACTIVE'
-            })
+                entityStatus: 'INACTIVE' })
         }
-
         this.setState({
             entity, messageTypes,
             ActiveEntityMenuItem: name,
@@ -93,19 +91,21 @@ export class Entities extends Component {
         const [ entity, messageTypes ] = await Promise.all(
             [getEntityObj(currentPage), messageTypesSubscribedTo(currentPage)]
         )
-        console.log(entity)
-        if(entity.AddressMappings.length){
-            entity.AddressMappings.forEach(addressMapping => {
-                const date = dateFormat(addressMapping.updatedAt, 'mmm dS, yyyy - h:MM TT')
-                this.setState({
-                    address: addressMapping.address,
-                    protocol: addressMapping.protocol,
-                    entityStatus: 'ACTIVE',
-                    lastUpdated: date,
-                })
+        const currentAddress = await getEntityAddress(entity.id)
+        if(currentAddress.hasOwnProperty('id')){
+            const date = dateFormat(currentAddress.updatedAt, 'mmm dS, yyyy - h:MM TT')
+            this.setState({ 
+                currentAddress: currentAddress.address,
+                protocol: currentAddress.protocol,
+                lastUpdated: date,
+                entityStatus: 'ACTIVE'
             })
         } else {
-            this.setState({ entityStatus: 'INACTIVE', lastUpdated: 'Never been updated' })
+            this.setState({ 
+                currentAddress: '',
+                protocol: '',
+                lastUpdated: 'Never been updated',
+                entityStatus: 'INACTIVE' })
         }
 
         this.setState({
@@ -121,6 +121,10 @@ export class Entities extends Component {
         this.setState({
             [name]: evt.target.value
         })
+    }
+
+    handleAddressChange = (evt) => {
+        this.setState({ currentAddress: evt.target.value})
     }
 
     handleOpen = () => this.setState({ modalOpen: true })
@@ -139,16 +143,15 @@ export class Entities extends Component {
 
         const addressObj = {
             protocol: this.state.protocol,
-            address: this.state.address,
+            address: this.state.currentAddress.replace(/https:\/\/|http:\/\/|tcp:\/\//g, ''),
             status: 'ACTIVE',
             EntityId: this.state.entity.id
         }
-
         deleteAddress(this.state.entity.id)
             .then(address => saveAddress(addressObj))
-            .then(entities => {
+            .then(currentAddress => {
                 const date = dateFormat(new Date(), 'mmm dS, yyyy - h:MM TT')
-                this.setState({ entities, lastUpdated: date, newAddressModalOpen: false, ShowAddressMessage: true, entityStatus: 'ACTIVE' })
+                this.setState({ currentAddress: currentAddress.address, lastUpdated: date, newAddressModalOpen: false, ShowAddressMessage: true, entityStatus: 'ACTIVE' })
                 this.handleInfoOnDismiss()
             }).catch(console.log)
     }
@@ -183,9 +186,12 @@ export class Entities extends Component {
                     ShowNewEntityMessage: true,
                     ActiveEntityMenuItem: fetchedEntity.name,
                     modalOpen: false,
-                    address: '',
+                    currentAddress: '',
+                    protocol: '',
                     name: '',
-                    description: ''
+                    description: '',
+                    lastUpdated: 'Never been updated',
+                    entityStatus: 'INACTIVE'
                 })
                 this.handleInfoOnDismiss()
             }).catch(console.log)
@@ -200,22 +206,12 @@ export class Entities extends Component {
     handleClose = () => this.setState({ modalOpen: false })
 
     handleNewAddressClose = () => this.setState({ newAddressModalOpen: false })
-    
-    getAddressUpdateLink = () => (
-        this.state.NewAddressInputVisible ?
-            <Button onClick={this.handleNewAddressLinkClick} color="red" className="new-address-button">
-                <Icon name="cancel" color="olive" />cancel update
-            </Button> :
-            <Button onClick={this.handleNewAddressLinkClick} color="teal" className="new-address-button">
-                <Icon name="edit" color="olive" />update address
-            </Button>
-    )
 
     entityTable = () => {
         const data = this.state.entity
         const TableRows = []
         for(var item in data){
-            if(['id', 'color', 'createdAt', 'updatedAt', 'AddressMappings'].includes(item)) continue
+            if(['id', 'color', 'createdAt', 'updatedAt', 'AddressMappings', 'address'].includes(item)) continue
             if(item === 'status'){
                 const status = this.state.entityStatus === 'ACTIVE' ? StatusLabel('green', 'ACTIVE') : StatusLabel('red', 'INACTIVE')
                 TableRows.push(<TableRow key={item} name={titleCase(item)} value={data[item] ? status : 'Not specified'}/>)
@@ -235,8 +231,8 @@ export class Entities extends Component {
     messages = () => {
         const newMessageDetails = {
             header: 'New Address Added:',
-            content: this.state.address ? 
-            `${this.state.ActiveEntityMenuItem} has been assigned ${this.state.address} as it's new address, using the ${this.state.protocol} protocol`
+            content: this.state.currentAddress ? 
+            `${this.state.ActiveEntityMenuItem} has been assigned ${this.state.currentAddress} as it's new address, using the ${this.state.protocol} protocol`
             : `${this.state.ActiveEntityMenuItem} address has been removed!! This has the effect of making this system INACTIVE and unavailable for data exchange`
         }
 
@@ -294,7 +290,7 @@ export class Entities extends Component {
     handleProtocolChange = (evt, data) => this.setState({ protocol: data.value })
 
     newAddressModal = () => {
-        const submitHandler = (!this.state.protocol || !this.state.address) ? this.handleEmptySubmit : this.handleNewAddressSubmit
+        const submitHandler = (!this.state.protocol || !this.state.currentAddress) ? this.handleEmptySubmit : this.handleNewAddressSubmit
         const updateAddressLink = <Link to='#' onClick={this.handleNewAddressModalOpen}>Update Address</Link>
         return (
             <NewAddressModal
@@ -302,10 +298,10 @@ export class Entities extends Component {
                 onDismiss={this.handleDismiss}
                 errorMessage={this.state.addressErrorMessage}
                 handleSubmit={submitHandler}
-                handleAddressChange={this.handleInputChange}
+                handleAddressChange={this.handleAddressChange}
                 handleProtocolChange={this.handleProtocolChange}
                 protocol={this.state.protocol}
-                address={this.state.address}
+                address={this.state.currentAddress}
                 handleClose={this.handleNewAddressClose}
                 newAddressModalOpen={this.state.newAddressModalOpen}
                 lastUpdated={this.state.lastUpdated}
@@ -330,7 +326,6 @@ export class Entities extends Component {
                             entities={this.state.EntityMenuData}
                             /> : null
                     }
-                    
                     <br/>
                     <span>{formModal}</span>
                 </Grid.Column>
