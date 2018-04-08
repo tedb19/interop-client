@@ -2,22 +2,20 @@
   "name": "interop-client",
   "version": "0.1.0",
   "dependencies": {
-    "axios": "^0.16.2",
-    "dateformat": "^2.0.0",
-    "file-exists": "^4.0.0",
-    "pretty-data": "^0.40.0",
-    "prop-types": "^15.5.10",
-    "rc-tooltip": "^3.4.8",
-    "react": "^15.6.1",
-    "react-dom": "^15.6.1",
-    "react-drag-and-drop": "^2.4.0",
-    "react-json-view": "^1.12.1",
-    "react-router-dom": "^4.1.2",
+    "axios": "0.16.2",
+    "dateformat": "2.0.0",
+    "prop-types": "15.5.10",
+    "rc-tooltip": "3.4.8",
+    "react": "15.6.1",
+    "react-dom": "15.6.1",
+    "react-drag-and-drop": "2.4.0",
+    "react-json-view": "1.12.1",
+    "react-router-dom": "4.1.2",
     "react-scripts": "1.0.11",
-    "semantic-ui-css": "^2.2.12",
-    "semantic-ui-react": "^0.71.4",
-    "title-case": "^2.1.1",
-    "victory": "^0.21.4"
+    "semantic-ui-css": "2.2.12",
+    "semantic-ui-react": "0.71.4",
+    "title-case": "2.1.1",
+    "victory": "0.21.4"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -25,5 +23,11 @@
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "eslint": "4.19.1",
+    "eslint-config-prettier": "2.9.0",
+    "eslint-plugin-import": "2.10.0",
+    "eslint-plugin-prettier": "2.6.0",
+    "prettier": "1.11.1"
+  }
 }
