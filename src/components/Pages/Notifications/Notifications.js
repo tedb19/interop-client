@@ -28,36 +28,36 @@ export class Notifications extends Component {
   }
 
   handleItemClick = (e, { name }) => {
-    !this.state.toggleErrors
-      ? getToggledLogs("ERROR", parseInt(name, 10) - 1)
-          .then(logs =>
-            this.setState({
-              logs: logs.result,
-              pages: logs.pages,
-              activeItem: name
-            })
+    this.state.toggleErrors
+      ? getToggledLogs("WARNING", parseInt(name, 10) - 1)
+          .then(logs => this.getAllLogsAndMsgs(logs.result))
+          .then(newLogs =>
+            this.setState({ logs: newLogs, pages: newLogs.pages })
           )
           .catch(console.log)
       : getLogs(parseInt(name, 10) - 1)
-          .then(logs =>
-            this.setState({
-              logs: logs.result,
-              pages: logs.pages,
-              activeItem: name
-            })
+          .then(logs => this.getAllLogsAndMsgs(logs.result))
+          .then(newLogs =>
+            this.setState({ logs: newLogs, pages: newLogs.pages })
           )
           .catch(console.log);
   };
 
-  handleToggle = (e, { value }) => {
+  handleToggle = (e, { checked }) => {
     this.setState({ toggleErrors: !this.state.toggleErrors, activeItem: "1" });
     const currentPage = 0;
-    value
-      ? getToggledLogs("ERROR", currentPage)
-          .then(logs => this.setState({ logs: logs.result, pages: logs.pages }))
+    checked
+      ? getToggledLogs("WARNING", currentPage)
+          .then(logs => this.getAllLogsAndMsgs(logs.result))
+          .then(newLogs =>
+            this.setState({ logs: newLogs, pages: newLogs.pages })
+          )
           .catch(console.log)
       : getLogs(currentPage)
-          .then(logs => this.setState({ logs: logs.result, pages: logs.pages }))
+          .then(logs => this.getAllLogsAndMsgs(logs.result))
+          .then(newLogs =>
+            this.setState({ logs: newLogs, pages: newLogs.pages })
+          )
           .catch(console.log);
   };
 
@@ -66,11 +66,13 @@ export class Notifications extends Component {
       if (evt.target.value.length < 3) return;
 
       getSearchedLogs(evt.target.value, 0)
-        .then(logs => this.setState({ logs: logs.result, pages: logs.pages }))
+        .then(logs => this.getAllLogsAndMsgs(logs.result))
+        .then(newLogs => this.setState({ logs: newLogs, pages: newLogs.pages }))
         .catch(console.log);
     } else {
       getLogs(parseInt(this.state.activeItem, 10) - 1)
-        .then(logs => this.setState({ logs: logs.result, pages: logs.pages }))
+        .then(logs => this.getAllLogsAndMsgs(logs.result))
+        .then(newLogs => this.setState({ logs: newLogs, pages: newLogs.pages }))
         .catch(console.log);
     }
   };
@@ -110,7 +112,7 @@ export class Notifications extends Component {
                 className="notifications-toggle-errors"
                 toggle
                 checked={this.state.toggleErrors}
-                label="toggle errors"
+                label="toggle queued"
                 onChange={this.handleToggle}
               />
               <Input

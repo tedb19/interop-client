@@ -4,7 +4,7 @@ import { Card, Icon } from "semantic-ui-react";
 const CardExtra = props => {
   const iconName = props.address ? "signal" : "cancel";
   const iconColor = props.address ? "green" : "red";
-  const address = props.address ? props.address : "NOT PROVIDED";
+  const address = props.address ? props.address : "Not Provided";
 
   return (
     <div>

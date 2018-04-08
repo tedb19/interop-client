@@ -18,7 +18,7 @@ export const LogListing = props => {
         name = "cancel circle";
         break;
       case "WARNING":
-        color = "yellow";
+        color = "red";
         name = "exclamation circle";
         break;
       default:
@@ -35,7 +35,7 @@ export const LogListing = props => {
         level={log.level}
         detail={log.log}
         json={log.json}
-        date={dateFormat(log.createdAt, "ddd mmm dS, yyyy - h:MM:ss TT")}
+        date={dateFormat(log.updatedAt, "ddd mmm dS, yyyy - h:MM:ss TT")}
       />
     );
   });

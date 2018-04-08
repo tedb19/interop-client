@@ -2,7 +2,7 @@ import React from "react";
 import { Icon, Menu } from "semantic-ui-react";
 
 export const PaginationMenu = props => {
-  const MAX_PAGES = 15;
+  const MAX_PAGES = 10;
   const currentPages = props.pages > MAX_PAGES ? MAX_PAGES : props.pages;
   const itemNumbers = Array(currentPages)
     .fill(1)
