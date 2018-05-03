@@ -25,14 +25,46 @@
   font-size: 15px !important;
   margin-left: 120px !important;
 }
-
+.header-menu {
+  margin-top: 20px !important;
+  margin-right: 8vw !important;
+}
+.shutdown-link-icon {
+  font-size: 1.2em !important;
+  font-weight: bolder !important;
+}
+.app-links {
+  float: right;
+}
+.help-link-icon {
+  font-size: 1em !important;
+  font-weight: bolder !important;
+}
 .header-section {
   margin-top: 20px;
   text-align: center;
 }
+.logout-icon {
+  font-size: 0.9em !important;
+}
 .ui.teal.card,
 .ui.red.card {
   width: 100vw !important;
+}
+.login-form {
+  width: 400px;
+  height: 420px;
+  background-color: aliceblue;
+  padding: 20px;
+  margin: 0 auto;
+  top: 20%;
+  bottom: 35%;
+  right: 0;
+  left: 0;
+  position: fixed !important;
+}
+.login-message-icon {
+  color: #e81123 !important;
 }
 .no-systems-span {
   padding: 1vw;
@@ -40,6 +72,21 @@
   font-weight: bolder;
   font-size: 13px;
   background-color: khaki;
+}
+.setting-value-missing {
+  color: crimson !important;
+}
+.setting-value {
+  background-color: inherit !important;
+  color: darkgray !important;
+  font-size: 14px !important;
+  font-style: italic;
+  float: right;
+  font-weight: bolder !important;
+}
+.setting-value-icon {
+  margin-left: 10px !important;
+  font-weight: bolder !important;
 }
 .single-message-type-stats-divider {
   clear: both;
@@ -97,6 +144,15 @@
 .address-card-header {
   font-size: 14px !important;
 }
+.pie-chart-container {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  padding: 10px;
+  width: 800px;
+  height: 800px;
+  background-color: #fff;
+}
 .new-address-input {
   margin-top: 10px;
   width: 210px;
@@ -119,9 +175,21 @@
   padding: 6px;
   line-height: 160%;
 }
+.login-forgot-password {
+  padding: 35%;
+  font-style: italic;
+  font-weight: bold;
+  font-size: 14px;
+  padding-top: 20px;
+}
+.login-forgot-password:hover {
+  text-decoration: underline;
+}
 .header-text {
   color: #2ecc71 !important;
-  font-size: 22px !important;
+  font-size: 18px !important;
+  font-style: italic;
+  font-weight: 800 !important;
 }
 .secondary-menu {
   min-width: 10vw !important;
@@ -131,21 +199,25 @@
   text-decoration: none;
   font-size: 17px !important;
   margin-bottom: 2px !important;
+  width: 65.6vw !important;
 }
 .icon {
   color: #2ecc71;
 }
-
+#blah2 {
+  width: 100% !important;
+}
 .singleitem {
   padding: 10px;
 }
-
 .content-segment-column {
   width: 100% !important;
-  padding-top: 55px !important;
 }
 .new-address-button {
   font-size: 0.85714286rem !important;
+}
+.detail-segment {
+  margin-top: 3vh !important;
 }
 .content-segment {
   background-color: aliceblue !important;
@@ -212,13 +284,16 @@
   clear: both;
   padding-bottom: 10px;
 }
+.logout-link {
+  float: right;
+}
 .stats-sub-header-left {
   text-align: center;
   background: #1b1c1d !important;
   color: orange !important;
   font-style: italic;
   float: left;
-  font-size: 16px !important;
+  font-size: 15px !important;
 }
 .single-item-divider {
   clear: both;
@@ -226,13 +301,18 @@
 .logs-listing-container {
   width: 100% !important;
 }
+.settings-update-link {
+  color: blue;
+  padding-left: 25px;
+}
 .stats-sub-header-right {
   text-align: center;
   background: #1b1c1d !important;
   color: orange !important;
   font-style: italic;
   float: right;
-  font-size: 14px !important;
+  padding-right: 25px !important;
+  font-size: 15px !important;
 }
 .stats-divider {
   clear: both;
@@ -313,8 +393,8 @@ i.info.circle.icon {
 }
 .App-logo {
   animation: App-logo-spin infinite 10s linear !important;
-  height: 30px !important;
-  width: 30px !important;
+  height: 20px !important;
+  width: 20px !important;
   margin-right: 10px !important;
 }
 
@@ -337,7 +417,7 @@ i.info.circle.icon {
 }
 .facility-name {
   color: orange;
-  font-size: 15px;
+  font-size: 13px;
   font-style: italic;
   font-weight: 600;
   margin-top: 5px;

@@ -1,6 +1,6 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import { Divider, Label } from "semantic-ui-react";
+import React from "react"
+import { Link } from "react-router-dom"
+import { Divider, Label } from "semantic-ui-react"
 
 export const SingleItem = props => {
   return (
@@ -18,5 +18,5 @@ export const SingleItem = props => {
       </Link>
       <Divider className="single-item-divider" />
     </div>
-  );
-};
+  )
+}

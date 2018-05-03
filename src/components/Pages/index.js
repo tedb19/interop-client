@@ -6,3 +6,4 @@ export {
 export { MessageTypes } from "./MessageTypes/MessageTypes";
 export { Settings } from "./Settings/Settings";
 export { Notifications } from "./Notifications/Notifications";
+export { Login } from "./Login/Login";

@@ -26,7 +26,6 @@ export const getData = async context => {
   let contextData = JSON.parse(localStorage.getItem(context));
   const isExpired = expiryTime();
   if (!contextData || isExpired) {
-    console.log("fetching new data..");
     const { data } = await axios.get(endPoint);
     contextData = data;
     localStorage.setItem(context, JSON.stringify(contextData));
@@ -36,8 +35,24 @@ export const getData = async context => {
 
 export const getLogs = async page => {
   const endPoint = `${ROOT_URL}/logs/${page}`;
+  const { data } = await axios.get(endPoint, {
+    headers: {
+      "Content-Type": "application/json"
+    }
+  });
+  return data;
+};
+
+export const getSettings = async () => {
+  const endPoint = `${ROOT_URL}/settings`;
   const { data } = await axios.get(endPoint);
   return data;
+};
+
+export const getFacility = async () => {
+  const endPoint = `${ROOT_URL}/settings/1`;
+  const { data } = await axios.get(endPoint);
+  return data.value;
 };
 
 export const getQueuedMessage = async id => {
@@ -51,7 +66,7 @@ export const getQueuedMessage = async id => {
 };
 
 export const getStats = async () => {
-  const endPoint = `${ROOT_URL}/stats/`;
+  const endPoint = `${ROOT_URL}/stats`;
   const { data } = await axios.get(endPoint);
   return data;
 };
@@ -78,6 +93,14 @@ export const saveSubscription = async subscription => {
   const url = `${ROOT_URL}/subscribers`;
   const method = "post";
   const { data } = await axios({ method, url, data: subscription });
+  return data;
+};
+
+export const authenticate = async login => {
+  const url = `${ROOT_URL}/authentication`;
+  const method = "post";
+  const { data } = await axios({ method, url, data: login });
+  console.log(data);
   return data;
 };
 
@@ -141,7 +164,7 @@ export const addEntity = async entity => {
 };
 
 export const saveStat = async stat => {
-  const url = `${ROOT_URL}/stats/`;
+  const url = `${ROOT_URL}/stats`;
   const method = "post";
   const { data } = await axios({ method, url, data: stat });
   return data;
@@ -173,6 +196,12 @@ export const updateEntity = async entity => {
   await localStorage.removeItem("entities");
   const entities = await getData("entities");
   return entities;
+};
+
+export const updateSetting = async setting => {
+  const url = `${ROOT_URL}/settings/${setting.id}`;
+  await axios.put(url, setting);
+  return setting;
 };
 
 export const removeSubscription = async (messageTypeName, entityName) => {

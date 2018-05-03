@@ -3,13 +3,15 @@ import { Grid, Segment } from "semantic-ui-react";
 
 import { RibbonSection } from "./RibbonSection";
 import { InfoSection } from "./InfoSection";
+import { AppLinks } from "./AppLinks";
 
 export const Detail = props => {
   return (
     <InfoSection>
       <Grid columns={1}>
         <Grid.Column className="content-segment-column">
-          <Segment raised className="content-segment">
+          <AppLinks hasSideMenu={true} />
+          <Segment raised className="content-segment detail-segment">
             <RibbonSection heading={props.heading} color="orange">
               {props.messages}
               {props.data}

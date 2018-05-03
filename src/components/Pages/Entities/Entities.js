@@ -134,7 +134,7 @@ export class Entities extends Component {
       EntityMenuData: secMenuData,
       entity,
       messageTypes,
-      ActiveEntityMenuItem: activeMenuItem.name,
+      ActiveEntityMenuItem: currentPage,
       NewAddressInputVisible: false
     });
   }
@@ -186,7 +186,7 @@ export class Entities extends Component {
         });
         this.handleInfoOnDismiss();
       })
-      .catch(console.log);
+      .catch(console.error);
   };
 
   handleSubmit = (evt, value) => {
@@ -234,7 +234,7 @@ export class Entities extends Component {
         });
         this.handleInfoOnDismiss();
       })
-      .catch(console.log);
+      .catch(console.error);
   };
 
   handleDismiss = () => {
@@ -290,15 +290,18 @@ export class Entities extends Component {
       </Table>
     );
   };
-
+  /*
+  .replace(':)', '😊')
+  .replace(':D', '😀')
+  .replace(':(', '🙁');*/
   messages = () => {
     const newMessageDetails = {
       header: "New Address Added:",
       content: this.state.currentAddress
-        ? `Yay! ${this.state.ActiveEntityMenuItem} has been assigned ${
+        ? `😊 Yaay!  ${this.state.ActiveEntityMenuItem} has been assigned ${
             this.state.currentAddress
           } as it's new address, using the ${this.state.protocol} protocol`
-        : `Oh snap! ${
+        : `🙁 Oh snap! ${
             this.state.ActiveEntityMenuItem
           } address has been removed!! This has the effect of making this system INACTIVE and unavailable for data exchange`
     };

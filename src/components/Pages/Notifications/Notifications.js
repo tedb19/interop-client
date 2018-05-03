@@ -1,15 +1,17 @@
 import React, { Component } from "react";
-import { Header, Grid, Divider, Input, Checkbox } from "semantic-ui-react";
+import { Header, Grid, Input, Checkbox } from "semantic-ui-react";
 import { MainContent } from "../../shared/Content/MainContent";
 import { LogListing } from "./LogListing";
 import {
   getLogs,
   getToggledLogs,
   getSearchedLogs,
-  getQueuedMessage
+  getQueuedMessage,
+  getLogsCount
 } from "../../../utils/data.utils";
 import { PaginationMenu } from "./PaginationMenu";
 import { CircularLoader } from "../../shared/Loader/CircularLoader";
+import { AppLinks } from "../../shared/Content/AppLinks";
 
 export class Notifications extends Component {
   state = {
@@ -17,30 +19,57 @@ export class Notifications extends Component {
     pages: null,
     activeItem: "1",
     toggleErrors: false,
-    time: new Date()
+    time: new Date(),
+    logCount: 0,
+    queued: 0,
+    sent: 0,
+    peepClicked: false
   };
 
-  componentWillMount() {
-    getLogs(parseInt(this.state.activeItem, 10) - 1)
-      .then(logs => this.getAllLogsAndMsgs(logs.result))
-      .then(newLogs => this.setState({ logs: newLogs, pages: newLogs.pages }))
-      .catch(console.log);
+  // TODO: When there is a search term present, pass the new logs through the search term
+  async componentDidMount() {
+    const { data } = await getLogsCount();
+    const logs = await getLogs(parseInt(this.state.activeItem, 10) - 1);
+    //const newLogs = await this.getAllLogsAndMsgs(logs.result);
+    this.setState({
+      logs,
+      pages: logs.pages,
+      logCount: logs.count,
+      sent: data.sent,
+      queued: data.queued
+    });
+    setInterval(async () => {
+      try {
+        await this.checkLogUpdates();
+      } catch (error) {
+        console.error(error);
+      }
+    }, 2000);
   }
+
+  checkLogUpdates = async () => {
+    const { data } = await getLogsCount();
+    if (data.queued !== this.state.queued || data.sent !== this.state.sent) {
+      const logs = await getLogs(parseInt(this.state.activeItem, 10) - 1);
+      //const newLogs = await this.getAllLogsAndMsgs(logs.result);
+      this.setState({
+        logs,
+        pages: logs.pages,
+        logCount: logs.count,
+        sent: data.sent,
+        queued: data.queued
+      });
+    }
+  };
 
   handleItemClick = (e, { name }) => {
     this.state.toggleErrors
       ? getToggledLogs("WARNING", parseInt(name, 10) - 1)
-          .then(logs => this.getAllLogsAndMsgs(logs.result))
-          .then(newLogs =>
-            this.setState({ logs: newLogs, pages: newLogs.pages })
-          )
-          .catch(console.log)
+          .then(logs => this.setState({ logs, pages: logs.pages }))
+          .catch(console.error)
       : getLogs(parseInt(name, 10) - 1)
-          .then(logs => this.getAllLogsAndMsgs(logs.result))
-          .then(newLogs =>
-            this.setState({ logs: newLogs, pages: newLogs.pages })
-          )
-          .catch(console.log);
+          .then(logs => this.setState({ logs, pages: logs.pages }))
+          .catch(console.error);
   };
 
   handleToggle = (e, { checked }) => {
@@ -48,17 +77,11 @@ export class Notifications extends Component {
     const currentPage = 0;
     checked
       ? getToggledLogs("WARNING", currentPage)
-          .then(logs => this.getAllLogsAndMsgs(logs.result))
-          .then(newLogs =>
-            this.setState({ logs: newLogs, pages: newLogs.pages })
-          )
-          .catch(console.log)
+          .then(logs => this.setState({ logs, pages: logs.pages }))
+          .catch(console.error)
       : getLogs(currentPage)
-          .then(logs => this.getAllLogsAndMsgs(logs.result))
-          .then(newLogs =>
-            this.setState({ logs: newLogs, pages: newLogs.pages })
-          )
-          .catch(console.log);
+          .then(logs => this.setState({ logs, pages: logs.pages }))
+          .catch(console.error);
   };
 
   handleInputChange = evt => {
@@ -66,14 +89,12 @@ export class Notifications extends Component {
       if (evt.target.value.length < 3) return;
 
       getSearchedLogs(evt.target.value, 0)
-        .then(logs => this.getAllLogsAndMsgs(logs.result))
-        .then(newLogs => this.setState({ logs: newLogs, pages: newLogs.pages }))
-        .catch(console.log);
+        .then(logs => this.setState({ logs, pages: logs.pages }))
+        .catch(console.error);
     } else {
       getLogs(parseInt(this.state.activeItem, 10) - 1)
-        .then(logs => this.getAllLogsAndMsgs(logs.result))
-        .then(newLogs => this.setState({ logs: newLogs, pages: newLogs.pages }))
-        .catch(console.log);
+        .then(logs => this.setState({ logs, pages: logs.pages }))
+        .catch(console.error);
     }
   };
 
@@ -98,15 +119,10 @@ export class Notifications extends Component {
       <div>
         <Header as="h2" className="sub-header-text">
           Notifications
+          <AppLinks hasSideMenu={false} />
         </Header>
         <MainContent>
-          <Grid columns={3}>
-            <Grid.Column width={16}>
-              <Header as="h3" className="stats-header">
-                IL Notifications:
-              </Header>
-              <Divider />
-            </Grid.Column>
+          <Grid columns={2}>
             <Grid.Column width={16}>
               <Checkbox
                 className="notifications-toggle-errors"

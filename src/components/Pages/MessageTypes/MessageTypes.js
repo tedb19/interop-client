@@ -11,6 +11,8 @@ import { InfoModal } from "../../shared/Modal/InfoModal";
 import { FormModal } from "./FormModal";
 import ReactJson from "react-json-view";
 import { CircularLoader } from "../../shared/Loader/CircularLoader";
+import AceEditor from "react-ace";
+import "brace/theme/monokai";
 import {
   saveStat,
   messageTypesSecondaryMenuData,
@@ -37,14 +39,15 @@ export class MessageTypes extends Component {
     const activeMenuItem = secMenuData.find((msgType, idx) => idx === 0);
     const currentPage = this.props.match.params.name || activeMenuItem.name;
     const [messageType, entities] = await Promise.all([
-      getMessageTypeObj(currentPage),
-      entitiesSubscribedTo(currentPage)
+      getMessageTypeObj(currentPage.replace(/-/g, " ")),
+      entitiesSubscribedTo(currentPage.replace(/-/g, " "))
     ]);
+
     this.setState({
       MessageTypeMenuData: secMenuData,
       messageType,
       entities,
-      ActiveMessageTypeMenuItem: activeMenuItem.name
+      ActiveMessageTypeMenuItem: currentPage.replace(/-/g, " ")
     });
   }
 
@@ -112,7 +115,7 @@ export class MessageTypes extends Component {
         });
         this.handleInfoOnDismiss();
       })
-      .catch(console.log);
+      .catch(console.error);
   };
 
   handleDismiss = () => {
@@ -173,9 +176,25 @@ export class MessageTypes extends Component {
 
     try {
       json = this.state.messageType.template.includes("<?xml version") ? (
-        <Container>
-          <p>{this.state.messageType.template.replace(/>/g, ">\n")}</p>
-        </Container>
+        <AceEditor
+          mode="xml"
+          theme="monokai"
+          name="blah2"
+          fontSize={14}
+          showPrintMargin={true}
+          showGutter={true}
+          highlightActiveLine={true}
+          value={this.state.messageType.template.replace(/    /g, "\n")}
+          setOptions={{
+            animatedScroll: true,
+            readOnly: true,
+            enableBasicAutocompletion: false,
+            enableLiveAutocompletion: false,
+            enableSnippets: true,
+            showLineNumbers: true,
+            tabSize: 3
+          }}
+        />
       ) : (
         <ReactJson
           src={JSON.parse(this.state.messageType.template)}

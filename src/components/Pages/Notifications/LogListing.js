@@ -34,7 +34,8 @@ export const LogListing = props => {
         name={name}
         level={log.level}
         detail={log.log}
-        json={log.json}
+        hasJson
+        json={log.QueueId ? true : false}
         date={dateFormat(log.updatedAt, "ddd mmm dS, yyyy - h:MM:ss TT")}
       />
     );

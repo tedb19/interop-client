@@ -13,6 +13,7 @@ import { DialogModal } from "../../shared/Modal/DialogModal";
 import { InfoMessage } from "../../shared/Modal/InfoMessage";
 import { CircularLoader } from "../../shared/Loader/CircularLoader";
 import titleCase from "title-case";
+import { AppLinks } from "../../shared/Content/AppLinks";
 
 export class MessageSubscription extends Component {
   state = {
@@ -62,7 +63,7 @@ export class MessageSubscription extends Component {
           });
           this.handleInfoOnDismiss();
         })
-        .catch(console.log);
+        .catch(console.error);
     } else if (key === "Yes" && this.state.unsubscribeDialogOpen) {
       removeSubscription(
         this.state.currentMessageType.replace(/ /g, "_"),
@@ -77,7 +78,7 @@ export class MessageSubscription extends Component {
           });
           this.handleInfoOnDismiss();
         })
-        .catch(console.log);
+        .catch(console.error);
     } else if (key === "No") {
       this.setState({
         unsubscribeDialogOpen: false,
@@ -129,7 +130,7 @@ export class MessageSubscription extends Component {
                         newSubscriptionDialogOpen: true
                       });
                 })
-                .catch(console.log);
+                .catch(console.error);
             }}
           />
         );
@@ -192,14 +193,11 @@ export class MessageSubscription extends Component {
       <div>
         <Header as="h2" className="sub-header-text">
           Message Subscription
+          <AppLinks hasSideMenu={false} />
         </Header>
         <MainContent>
           <Grid columns={1}>
             <Grid.Column width={16}>
-              <Header as="h3" className="stats-header">
-                Message types and their subscriptions
-              </Header>
-              <Divider />
               {this.state.newSubscriptionMessageOpen ? (
                 <InfoMessage
                   currentEntity={this.state.currentEntity}

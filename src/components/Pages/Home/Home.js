@@ -23,6 +23,8 @@ import { SingleSystemOnline } from "./SingleSystemOnline";
 import { CircularLoader } from "../../shared/Loader/CircularLoader";
 import { config } from "../../../utils/config.util";
 import dateFormat from "dateformat";
+import { AppLinks } from "../../shared/Content/AppLinks";
+import { MessageStatsPie } from "./PieChart";
 
 export class Home extends Component {
   state = {
@@ -30,7 +32,7 @@ export class Home extends Component {
     activeSystems: []
   };
 
-  async componentWillMount() {
+  async componentDidMount() {
     const [data, activeSystems] = await Promise.all([
       getStats(),
       getActiveSystems()
@@ -56,19 +58,32 @@ export class Home extends Component {
     return totals;
   };
 
+  // TODO: load a single message type stat each time and use semantic ui transitions to load/remove them
+  showMessageStats = stat => {
+    setInterval(async () => {
+      try {
+        await this.checkLogUpdates();
+      } catch (error) {
+        console.error(error);
+      }
+    }, 2000);
+  };
+
   messageTypeStats = () => {
     let multipleMessageStats = null;
     if (this.state.stats.length) {
       const stats = this.getAllStatValues("MESSAGETYPE");
 
-      multipleMessageStats = stats.map((stat, idx) => (
-        <SingleMessageTypeStats
-          key={Math.random()}
-          color={config.colors[idx]}
-          messageType={stat.name}
-          value={stat.value}
-        />
-      ));
+      multipleMessageStats = stats
+        .filter(stat => stat.value !== "0")
+        .map((stat, idx) => (
+          <SingleMessageTypeStats
+            key={Math.random()}
+            color={config.colors[idx]}
+            messageType={stat.name}
+            value={stat.value}
+          />
+        ));
     } else {
       multipleMessageStats = <CircularLoader />;
     }
@@ -139,6 +154,11 @@ export class Home extends Component {
       const queued = parseInt(this.getStatValue("QUEUED"), 10);
       const errored = parseInt(this.getStatValue("ERRORED"), 10);
       const received = parseInt(this.getStatValue("RECEIVED"), 10);
+      const data = [
+        { name: "Sent", value: sent },
+        { name: "Queued", value: queued },
+        { name: "Errored", value: errored }
+      ];
       let dataToShow = [];
       if (sent) {
         dataToShow.push({
@@ -163,7 +183,7 @@ export class Home extends Component {
       }
 
       msgPieChart = received ? (
-        <VictoryPie
+        /*<VictoryPie
           labelComponent={<VictoryLabel />}
           data={dataToShow}
           events={[
@@ -193,7 +213,8 @@ export class Home extends Component {
             labels: { fill: "maroon", fontWeight: "bolder", paddingTop: "1px" }
           }}
           height={300}
-        />
+        />*/
+        <MessageStatsPie data={data} />
       ) : (
         <Container className="no-mesaages-span">
           There are currently no messages exchanged!
@@ -224,6 +245,7 @@ export class Home extends Component {
       <div>
         <Header as="h2" className="sub-header-text">
           Dashboard
+          <AppLinks hasSideMenu={false} />
         </Header>
         <MainContent>
           <Grid columns={3}>
