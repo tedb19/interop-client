@@ -1,19 +1,16 @@
-import React from "react";
-import { Divider, Icon } from "semantic-ui-react";
-import { InfoModal } from "../../shared/Modal/InfoModal";
+import React from 'react'
+import { Divider, Icon } from 'semantic-ui-react'
+import { InfoModal } from '../../shared/Modal/InfoModal'
+
+import { PeekContent } from './PeekContent'
 
 export const SingleLog = props => {
   return (
     <div className="singleitem">
-      <Icon
-        name={props.name}
-        color={props.color}
-        size="huge"
-        className="singlelog-color-label"
-      />
+      <Icon name={props.name} color={props.color} className="singlelog-color-label" />
       <span className="segment-description">
         {props.detail}
-        {props.json ? (
+        {props.hasData ? (
           <InfoModal
             trigger={
               <Icon
@@ -27,7 +24,7 @@ export const SingleLog = props => {
             }
             size="large"
             header="The Message"
-            content={props.content}
+            content={<PeekContent json={props.json} />}
             footer={<p className="info-modal-footer">Message Version: 1.0</p>}
           />
         ) : null}
@@ -35,5 +32,5 @@ export const SingleLog = props => {
       <span className="segment-log-date">{props.date}</span>
       <Divider className="single-item-divider" />
     </div>
-  );
-};
+  )
+}

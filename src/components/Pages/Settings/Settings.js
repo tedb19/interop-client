@@ -1,12 +1,12 @@
-import React, { Component } from "react";
-import { Header, Segment, Label, Divider, Icon } from "semantic-ui-react";
-import { MainContent } from "../../shared/Content/MainContent";
-import { config } from "../../../utils/config.util";
-import { SingleSetting } from "./SingleSetting";
-import { Link } from "react-router-dom";
-import { NewSettingsForm } from "./NewSettingsForm";
-import { getSettings, updateSetting } from "../../../utils/data.utils";
-import { AppLinks } from "../../shared/Content/AppLinks";
+import React, { Component } from 'react'
+import { Header, Segment, Label, Divider, Icon } from 'semantic-ui-react'
+import { MainContent } from '../../shared/Content/MainContent'
+import { config } from '../../../utils/config.util'
+import { SingleSetting } from './SingleSetting'
+import { Link } from 'react-router-dom'
+import { NewSettingsForm } from './NewSettingsForm'
+import { getSettings, updateSetting } from '../../../utils/data.utils'
+import { AppLinks } from '../../shared/Content/AppLinks'
 
 export class Settings extends Component {
   state = {
@@ -15,27 +15,27 @@ export class Settings extends Component {
     ShowNewSettingsMessage: false,
     ShowSettingsMessage: false,
     currentSetting: {
-      value: "",
-      description: "Test setting",
+      value: '',
+      description: 'Test setting',
       isUpdatable: true
     },
-    settingsErrorMessage: "",
-    value: "",
+    settingsErrorMessage: '',
+    value: '',
     settings: []
-  };
+  }
 
   ListItems = () => {
     return this.state.settings.length
       ? this.state.settings.map((dataItem, idx) => {
-          let value = "";
-          if (dataItem.description.toLowerCase().includes("password")) {
+          let value = ''
+          if (dataItem.description.toLowerCase().includes('password')) {
             if (dataItem.value) {
-              value = "**********";
+              value = '**********'
             } else {
-              value = "";
+              value = ''
             }
           } else {
-            value = dataItem.value;
+            value = dataItem.value
           }
           return (
             <SingleSetting
@@ -54,34 +54,33 @@ export class Settings extends Component {
               newSettingsModalOpen={this.state.newSettingsModalOpen}
               lastUpdated={this.state.currentSetting.lastUpdated}
             />
-          );
+          )
         })
-      : null;
-  };
+      : null
+  }
 
   handleInputChange = evt => {
-    const name = evt.target.name;
+    const name = evt.target.name
+    console.log('name', name)
     this.setState({
       [name]: evt.target.value
-    });
-  };
+    })
+  }
 
   handleSettingsValueChange = evt => {
-    this.setState({ value: evt.target.value });
-  };
+    this.setState({ value: evt.target.value })
+  }
 
   handleDescriptionChange = (evt, data) => {
-    const setting = this.state.settings.find(
-      setting => setting.description === data.value
-    );
+    const setting = this.state.settings.find(setting => setting.description === data.value)
     this.setState({
       currentSetting: {
         ...this.state.currentSetting,
         description: data.value,
-        value: setting.value
+        value: setting.value ? setting.value : ''
       }
-    });
-  };
+    })
+  }
 
   handleValueChange = evt => {
     this.setState({
@@ -89,75 +88,66 @@ export class Settings extends Component {
         ...this.state.currentSetting,
         value: evt.target.value
       }
-    });
-  };
+    })
+  }
 
   handleNewSettingsModalOpen = (evt, data) => {
-    this.setState({ newSettingsModalOpen: true });
-  };
+    this.setState({ newSettingsModalOpen: true })
+  }
 
   handleEmptySubmit = evt => {
-    evt.preventDefault();
+    evt.preventDefault()
     this.setState({
       errorMessage: true
-    });
-    this.handleDismiss();
-  };
+    })
+    this.handleDismiss()
+  }
 
   handleNewSettingsSubmit = async (evt, value) => {
     const setting = this.state.settings.find(
       setting1 => setting1.description === this.state.currentSetting.description
-    );
-    await updateSetting({ ...setting, value: this.state.currentSetting.value });
-    const settings = await getSettings();
-    this.setState({ settings });
-    this.handleInfoOnDismiss();
-    this.handleNewSettingsClose();
-  };
+    )
+    await updateSetting({ ...setting, value: this.state.currentSetting.value })
+    const settings = await getSettings()
+    console.log('new', settings)
+    this.setState({ settings })
+    this.handleInfoOnDismiss()
+    this.handleNewSettingsClose()
+  }
 
   handleInfoOnDismiss = () => {
     setTimeout(() => {
-      this.setState({ ShowNewSettingsMessage: false });
-    }, 5000);
-  };
+      this.setState({ ShowNewSettingsMessage: false })
+    }, 5000)
+  }
 
   handleDismiss = () => {
     setTimeout(() => {
-      this.setState({ errorMessage: false });
-    }, 3000);
-  };
-
-  async componentDidMount() {
-    const settings = await getSettings();
-    this.setState({ settings });
+      this.setState({ errorMessage: false })
+    }, 3000)
   }
 
-  handleNewSettingsClose = () => this.setState({ newSettingsModalOpen: false });
+  async componentDidMount() {
+    const settings = await getSettings()
+    this.setState({ settings })
+  }
 
-  handleNewSettingsOpen = () => this.setState({ newSettingsModalOpen: true });
+  handleNewSettingsClose = () => this.setState({ newSettingsModalOpen: false })
+
+  handleNewSettingsOpen = () => this.setState({ newSettingsModalOpen: true })
 
   newSettingsModal = () => {
     const submitHandler =
       !this.state.currentSetting.value || !this.state.currentSetting.description
         ? this.handleEmptySubmit
-        : this.handleNewSettingsSubmit;
+        : this.handleNewSettingsSubmit
 
     const updateSettingsLink = (
-      <Link
-        to="#"
-        onClick={this.handleNewSettingsOpen}
-        className="settings-update-link"
-      >
+      <Link to="#" onClick={this.handleNewSettingsOpen} className="settings-update-link">
         Update Settings
-        <Icon
-          name="write"
-          color="teal"
-          link
-          className="setting-value-icon"
-          size="small"
-        />
+        <Icon name="write" color="teal" link className="setting-value-icon" size="small" />
       </Link>
-    );
+    )
 
     return (
       <NewSettingsForm
@@ -180,12 +170,12 @@ export class Settings extends Component {
         newSettingsModalOpen={this.state.newSettingsModalOpen}
         lastUpdated={this.state.currentSetting.lastUpdated}
       />
-    );
-  };
+    )
+  }
   //TODO: On updating setting, its not updated automatically on settings page or facility header banner
   render() {
-    const settingsListing = this.ListItems();
-    const newSettings = this.newSettingsModal();
+    const settingsListing = this.ListItems()
+    const newSettings = this.newSettingsModal()
     return (
       <div>
         <Header as="h2" className="sub-header-text">
@@ -202,6 +192,6 @@ export class Settings extends Component {
           </Segment>
         </MainContent>
       </div>
-    );
+    )
   }
 }

@@ -1,32 +1,31 @@
-import React from "react";
-import { Container, Divider, Segment, Label } from "semantic-ui-react";
-import { SingleLog } from "./SingleLog";
-import dateFormat from "dateformat";
+import React from 'react'
+import { Container, Divider, Segment, Label } from 'semantic-ui-react'
+import { SingleLog } from './SingleLog'
+import dateFormat from 'dateformat'
 
 export const LogListing = props => {
   const logs = props.logs.map(log => {
-    let color = "";
-    let name = "";
+    let color = ''
+    let name = ''
 
     switch (log.level) {
-      case "INFO":
-        color = "green";
-        name = "info circle";
-        break;
-      case "ERROR":
-        color = "red";
-        name = "cancel circle";
-        break;
-      case "WARNING":
-        color = "red";
-        name = "exclamation circle";
-        break;
+      case 'INFO':
+        color = 'green'
+        name = 'info circle'
+        break
+      case 'ERROR':
+        color = 'red'
+        name = 'cancel circle'
+        break
+      case 'WARNING':
+        color = 'red'
+        name = 'exclamation circle'
+        break
       default:
-        color = "green";
-        name = "info circle";
-        break;
+        color = 'green'
+        name = 'info circle'
+        break
     }
-
     return (
       <SingleLog
         key={Math.random()}
@@ -34,24 +33,23 @@ export const LogListing = props => {
         name={name}
         level={log.level}
         detail={log.log}
-        hasJson
-        json={log.QueueId ? true : false}
-        date={dateFormat(log.updatedAt, "ddd mmm dS, yyyy - h:MM:ss TT")}
+        hasData={log.QueueId ? true : false}
+        json={log.json}
+        date={dateFormat(log.updatedAt, 'ddd mmm dS, yyyy - h:MM:ss TT')}
       />
-    );
-  });
+    )
+  })
 
   return (
     <Container className="logs-listing-container">
       <Segment inverted className="segment-subscriptions">
         <Label className="stats-sub-header-left" />
         <Label className="stats-sub-header-right">
-          last updated on{" "}
-          {dateFormat(props.updateDate, "dddd, mmmm dS, yyyy, h:MM:ss TT")}
+          last updated on {dateFormat(props.updateDate, 'dddd, mmmm dS, yyyy, h:MM:ss TT')}
         </Label>
         <Divider className="stats-divider" />
         {logs}
       </Segment>
     </Container>
-  );
-};
+  )
+}

@@ -1,20 +1,20 @@
-import React from "react";
-import { Icon, Menu } from "semantic-ui-react";
+import React from 'react'
+import { Icon, Menu } from 'semantic-ui-react'
 
 export const PaginationMenu = props => {
-  const MAX_PAGES = 5;
-  const currentPages = props.pages > MAX_PAGES ? MAX_PAGES : props.pages;
+  const MAX_PAGES = 10
+  const currentPages = props.pages > MAX_PAGES ? MAX_PAGES : props.pages
   const itemNumbers = Array(currentPages)
     .fill(1)
-    .map((x, y) => x + y);
+    .map((x, y) => x + y)
   const MenuItems = itemNumbers.map(menuItem => (
     <Menu.Item
       key={menuItem}
-      name={menuItem + ""}
-      active={props.activeItem === menuItem + ""}
+      name={menuItem.toString()}
+      active={props.activeItem === menuItem.toString()}
       onClick={props.handleItemClick}
     />
-  ));
+  ))
 
   return (
     <div>
@@ -24,5 +24,5 @@ export const PaginationMenu = props => {
       </Menu>
       <Icon name="angle double right" />
     </div>
-  );
-};
+  )
+}

@@ -1,25 +1,25 @@
-import React, { Component } from "react";
-import { Link } from "react-router-dom";
-import titleCase from "title-case";
-import { Header, Grid, Container, Table, Message } from "semantic-ui-react";
-import { MessageTypesMenu } from "./MessageTypesMenu";
-import { MoreInfo } from "../../shared/Content/MoreInfo";
-import { Detail } from "../../shared/Content/Detail";
-import { TableRow } from "../../shared/Table/TableRow";
-import { StatusLabel } from "../../shared/Misc/StatusLabel";
-import { InfoModal } from "../../shared/Modal/InfoModal";
-import { FormModal } from "./FormModal";
-import ReactJson from "react-json-view";
-import { CircularLoader } from "../../shared/Loader/CircularLoader";
-import AceEditor from "react-ace";
-import "brace/theme/monokai";
+import React, { Component } from 'react'
+import { Link } from 'react-router-dom'
+import titleCase from 'title-case'
+import { Header, Grid, Container, Table, Message } from 'semantic-ui-react'
+import { MessageTypesMenu } from './MessageTypesMenu'
+import { MoreInfo } from '../../shared/Content/MoreInfo'
+import { Detail } from '../../shared/Content/Detail'
+import { TableRow } from '../../shared/Table/TableRow'
+import { StatusLabel } from '../../shared/Misc/StatusLabel'
+import { InfoModal } from '../../shared/Modal/InfoModal'
+import { FormModal } from './FormModal'
+import ReactJson from 'react-json-view'
+import { CircularLoader } from '../../shared/Loader/CircularLoader'
+import AceEditor from 'react-ace'
+import 'brace/theme/monokai'
 import {
   saveStat,
   messageTypesSecondaryMenuData,
   getMessageTypeObj,
   entitiesSubscribedTo,
   addMessageType
-} from "../../../utils/data.utils";
+} from '../../../utils/data.utils'
 
 export class MessageTypes extends Component {
   state = {
@@ -28,154 +28,147 @@ export class MessageTypes extends Component {
     messageType: null,
     ShowNewMessage: false,
     entities: [],
-    name: "",
+    name: '',
     modalOpen: false,
-    verboseName: "",
-    description: ""
-  };
+    verboseName: '',
+    description: ''
+  }
 
   async componentDidMount() {
-    const secMenuData = await messageTypesSecondaryMenuData();
-    const activeMenuItem = secMenuData.find((msgType, idx) => idx === 0);
-    const currentPage = this.props.match.params.name || activeMenuItem.name;
+    const secMenuData = await messageTypesSecondaryMenuData()
+    const activeMenuItem = secMenuData.find((msgType, idx) => idx === 0)
+    const currentPage = this.props.match.params.name || activeMenuItem.name
     const [messageType, entities] = await Promise.all([
-      getMessageTypeObj(currentPage.replace(/-/g, " ")),
-      entitiesSubscribedTo(currentPage.replace(/-/g, " "))
-    ]);
+      getMessageTypeObj(currentPage.replace(/-/g, ' ')),
+      entitiesSubscribedTo(currentPage.replace(/-/g, ' '))
+    ])
 
     this.setState({
       MessageTypeMenuData: secMenuData,
       messageType,
       entities,
-      ActiveMessageTypeMenuItem: currentPage.replace(/-/g, " ")
-    });
+      ActiveMessageTypeMenuItem: currentPage.replace(/-/g, ' ')
+    })
   }
 
   handleMessageTypeMenuItemClick = async (e, { name }) => {
     const [messageType, entities] = await Promise.all([
       getMessageTypeObj(name),
       entitiesSubscribedTo(name)
-    ]);
+    ])
     this.setState({
       messageType,
       entities,
       ActiveMessageTypeMenuItem: name
-    });
-  };
+    })
+  }
 
   handleInputChange = evt => {
-    const name = evt.target.name;
+    const name = evt.target.name
     this.setState({
       [name]: evt.target.value
-    });
-  };
+    })
+  }
 
-  handleOpen = () => this.setState({ modalOpen: true });
+  handleOpen = () => this.setState({ modalOpen: true })
 
   handleInfoOnDismiss = () => {
     setTimeout(() => {
-      this.setState({ ShowNewMessage: false });
-    }, 5000);
-  };
+      this.setState({ ShowNewMessage: false })
+    }, 5000)
+  }
 
   handleEmptySubmit = evt => {
-    evt.preventDefault();
+    evt.preventDefault()
     this.setState({
       errorMessage: true
-    });
-    this.handleDismiss();
-  };
+    })
+    this.handleDismiss()
+  }
 
   handleSubmit = (evt, value) => {
     const messageTYpe = {
       description: this.state.description,
       name: this.state.name.toUpperCase(),
-      verboseName: this.state.verboseName.toUpperCase().replace(/ /g, "_")
-    };
+      verboseName: this.state.verboseName.toUpperCase().replace(/ /g, '_')
+    }
 
     const stat = {
-      name: `${this.state.verboseName
-        .toUpperCase()
-        .replace(/ /g, "_")}_MESSAGETYPE`,
-      value: "0",
-      description: ""
-    };
+      name: `${this.state.verboseName.toUpperCase().replace(/ /g, '_')}_MESSAGETYPE`,
+      value: '0',
+      description: ''
+    }
     addMessageType(messageTYpe)
-      .then(messageTypes =>
-        Promise.all([messageTypesSecondaryMenuData(), saveStat(stat)])
-      )
+      .then(messageTypes => Promise.all([messageTypesSecondaryMenuData(), saveStat(stat)]))
       .then(([secMenuData, stat]) => {
         this.setState({
           MessageTypeMenuData: secMenuData,
           modalOpen: false,
           ShowNewMessage: true,
-          ActiveMessageTypeMenuItem: `${titleCase(
-            messageTYpe.verboseName.replace(/_/g, " ")
-          )}`
-        });
-        this.handleInfoOnDismiss();
+          ActiveMessageTypeMenuItem: `${titleCase(messageTYpe.verboseName.replace(/_/g, ' '))}`
+        })
+        this.handleInfoOnDismiss()
       })
-      .catch(console.error);
-  };
+      .catch(console.error)
+  }
 
   handleDismiss = () => {
     setTimeout(() => {
-      this.setState({ errorMessage: false });
-    }, 4000);
-  };
+      this.setState({ errorMessage: false })
+    }, 4000)
+  }
 
-  handleClose = () => this.setState({ modalOpen: false });
+  handleClose = () => this.setState({ modalOpen: false })
 
   messageTypeTable = () => {
-    const data = this.state.messageType;
-    const TableRows = [];
+    const data = this.state.messageType
+    const TableRows = []
     for (var item in data) {
-      if (["id", "color", "createdAt", "updatedAt", "template"].includes(item))
-        continue;
-      if (item === "status") {
+      if (['id', 'color', 'createdAt', 'updatedAt', 'template'].includes(item)) continue
+      if (item === 'status') {
         const status =
-          data[item] === "ACTIVE"
-            ? StatusLabel("green", data[item])
-            : StatusLabel("red", data[item]);
+          data[item] === 'ACTIVE'
+            ? StatusLabel('green', data[item])
+            : StatusLabel('red', data[item])
         TableRows.push(
           <TableRow
             key={item}
             name={titleCase(item)}
-            value={data[item] ? status : "Not specified"}
+            value={data[item] ? status : 'Not specified'}
           />
-        );
-      } else if (item === "verboseName") {
+        )
+      } else if (item === 'verboseName') {
         TableRows.push(
           <TableRow
             key={item}
             name={titleCase(item)}
-            value={titleCase(data[item].replace(/_/g, " "))}
+            value={titleCase(data[item].replace(/_/g, ' '))}
           />
-        );
+        )
       } else {
         TableRows.push(
           <TableRow
             key={item}
             name={titleCase(item)}
-            value={data[item] ? data[item] : "Not specified"}
+            value={data[item] ? data[item] : 'Not specified'}
           />
-        );
+        )
       }
     }
     return (
       <Table celled striped>
         <Table.Body>{TableRows}</Table.Body>
       </Table>
-    );
-  };
+    )
+  }
 
   jsonContent = () => {
-    let json = "";
+    let json = ''
     if (!this.state.ActiveMessageTypeMenuItem)
-      return <Container>Message sample has not been uploaded</Container>;
+      return <Container>Message sample has not been uploaded</Container>
 
     try {
-      json = this.state.messageType.template.includes("<?xml version") ? (
+      json = this.state.messageType.template.includes('<?xml version') ? (
         <AceEditor
           mode="xml"
           theme="monokai"
@@ -184,7 +177,7 @@ export class MessageTypes extends Component {
           showPrintMargin={true}
           showGutter={true}
           highlightActiveLine={true}
-          value={this.state.messageType.template.replace(/    /g, "\n")}
+          value={this.state.messageType.template.replace(/    /g, '\n')}
           setOptions={{
             animatedScroll: true,
             readOnly: true,
@@ -202,47 +195,45 @@ export class MessageTypes extends Component {
           name="message"
           iconStyle="triangle"
           enableClipboard={true}
-          style={{ padding: "25px", fontFamily: "sans-serif" }}
+          style={{ padding: '25px', fontFamily: 'sans-serif' }}
           displayDataTypes={true}
         />
-      );
+      )
     } catch (err) {
-      json = <Container>Message sample has not been uploaded</Container>;
+      json = <Container>Message sample has not been uploaded</Container>
     }
-    return json;
-  };
+    return json
+  }
 
   infoModal = () => {
     if (this.state.messageType) {
-      const messageExample = <Link to="#">view message</Link>;
-      const messageFooter = (
-        <p className="info-modal-footer">Message Version: 1.0</p>
-      );
-      const jsonContent = this.jsonContent();
+      const messageExample = <Link to="#">view message</Link>
+      const messageFooter = <p className="info-modal-footer">Message Version: 1.0</p>
+      const jsonContent = this.jsonContent()
       return (
         <InfoModal
           trigger={messageExample}
           size="large"
-          header={titleCase(this.state.messageType.verboseName) + " Message:"}
+          header={titleCase(this.state.messageType.verboseName) + ' Message:'}
           content={jsonContent}
           footer={messageFooter}
         />
-      );
+      )
     } else {
-      return null;
+      return null
     }
-  };
+  }
 
   formModal = () => {
     const submitHandler =
       !this.state.name || !this.state.verboseName || !this.state.description
         ? this.handleEmptySubmit
-        : this.handleSubmit;
+        : this.handleSubmit
     const newMsgType = (
       <Link to="#" onClick={this.handleOpen}>
         New Message Type
       </Link>
-    );
+    )
     return (
       <FormModal
         trigger={newMsgType}
@@ -259,16 +250,16 @@ export class MessageTypes extends Component {
         handleClose={this.handleClose}
         modalOpen={this.state.modalOpen}
       />
-    );
-  };
+    )
+  }
 
   messages = () => {
     const newMessageTypeDetails = {
-      header: "New Message Type Added:",
+      header: 'New Message Type Added:',
       content: `${
         this.state.verboseName
       } message type has been added successfully! Systems can now subscribe to this message type`
-    };
+    }
     if (this.state.ShowNewMessage) {
       return (
         <Message
@@ -280,21 +271,17 @@ export class MessageTypes extends Component {
           info={true}
           size="small"
         />
-      );
+      )
     } else {
-      return null;
+      return null
     }
-  };
+  }
 
   render() {
-    const tableRows = this.state.messageType ? (
-      this.messageTypeTable()
-    ) : (
-      <CircularLoader />
-    );
-    const infoModal = this.infoModal();
-    const formModal = this.formModal();
-    const messages = this.messages();
+    const tableRows = this.state.messageType ? this.messageTypeTable() : <CircularLoader />
+    const infoModal = this.infoModal()
+    const formModal = this.formModal()
+    const messages = this.messages()
 
     return (
       <Grid columns={13}>
@@ -304,9 +291,7 @@ export class MessageTypes extends Component {
           </Header>
           {this.state.MessageTypeMenuData ? (
             <MessageTypesMenu
-              handleMessageTypeMenuItemClick={
-                this.handleMessageTypeMenuItemClick
-              }
+              handleMessageTypeMenuItemClick={this.handleMessageTypeMenuItemClick}
               activeItem={this.state.ActiveMessageTypeMenuItem}
               messageTypes={this.state.MessageTypeMenuData}
             />
@@ -335,6 +320,6 @@ export class MessageTypes extends Component {
           </Detail>
         </Grid.Column>
       </Grid>
-    );
+    )
   }
 }

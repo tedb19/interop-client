@@ -1,55 +1,66 @@
-import React from "react";
-import { PieChart, Pie, Sector, Cell, Tooltip } from "recharts";
-
-const COLORS = ["green", "orange", "red"];
-
-const RADIAN = Math.PI / 180;
+import React from 'react'
+import { VictoryPie, VictoryLabel, VictoryTheme } from 'victory'
+import { Container } from 'semantic-ui-react'
 
 export const MessageStatsPie = ({ data }) => {
-  return (
-    <div className="pie-chart-container">
-      <PieChart width={800} height={400}>
-        <Pie
-          data={data}
-          cx={300}
-          cy={200}
-          labelLine={false}
-          label={renderCustomizedLabel}
-          outerRadius={80}
-          fill="#8884d8"
-        >
-          {data.map((entry, index) => (
-            <Cell fill={COLORS[index % COLORS.length]} />
-          ))}
-        </Pie>
-        <Tooltip />
-      </PieChart>
-    </div>
-  );
-};
+  let msgPieChart = null
 
-const renderCustomizedLabel = ({
-  cx,
-  cy,
-  midAngle,
-  innerRadius,
-  outerRadius,
-  percent,
-  index
-}) => {
-  const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
-  const x = cx + radius * Math.cos(-midAngle * RADIAN);
-  const y = cy + radius * Math.sin(-midAngle * RADIAN);
+  let dataToShow = []
+  if (data.sent) {
+    dataToShow.push({
+      x: 'Sent',
+      y: data.sent / data.received,
+      label: `Sent (${data.sent})`
+    })
+  }
+  if (data.queued) {
+    dataToShow.push({
+      x: 'Queued',
+      y: data.queued / data.received,
+      label: `Queued (${data.queued})`
+    })
+  }
+  if (data.errored) {
+    dataToShow.push({
+      x: 'Errors',
+      y: data.errored / data.received,
+      label: `Errors (${data.errored})`
+    })
+  }
 
-  return (
-    <text
-      x={x}
-      y={y}
-      fill="white"
-      textAnchor={x > cx ? "start" : "end"}
-      dominantBaseline="central"
-    >
-      {`${(percent * 100).toFixed(0)}%`}
-    </text>
-  );
-};
+  msgPieChart = data.received ? (
+    <VictoryPie
+      labelComponent={<VictoryLabel />}
+      data={dataToShow}
+      events={[
+        {
+          target: 'data',
+          eventHandlers: {
+            onClick: () => {
+              return [
+                {
+                  target: 'labels',
+                  mutation: props => {
+                    return props.text === 'clicked' ? null : { text: 'clicked' }
+                  }
+                }
+              ]
+            }
+          }
+        }
+      ]}
+      categories={{ x: ['Submitted', 'Queued', 'Errors'] }}
+      colorScale={['green', 'gold', 'red']}
+      theme={VictoryTheme.material}
+      className="pie-chart"
+      style={{
+        labels: { fill: 'maroon', fontWeight: 'bolder', paddingTop: '1px' }
+      }}
+      height={300}
+    />
+  ) : (
+    <Container className="no-mesaages-span">There are currently no messages exchanged!</Container>
+  )
+
+  return msgPieChart
+}
