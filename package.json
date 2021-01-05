@@ -2,7 +2,7 @@
   "name": "interop-client",
   "version": "0.1.0",
   "dependencies": {
-    "axios": "0.16.2",
+    "axios": "0.21.1",
     "dateformat": "2.0.0",
     "prop-types": "15.5.10",
     "rc-tooltip": "3.4.8",
